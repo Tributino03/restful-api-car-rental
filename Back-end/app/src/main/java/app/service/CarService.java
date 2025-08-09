@@ -38,8 +38,16 @@ public class CarService {
     }
 
     public String create(Car car){
+        this.checkCarName(car.getName(), car.getYear());
         this.carRepository.save(car);
         return "Car registered successfully.";
+    }
+
+    public boolean checkCarName(String name, int year){
+        if(name.equals("Jeep Compass")  && year < 2006){
+            throw new RuntimeException();
+        }
+        return true;
     }
 
     public String update(Car car, Long id){
