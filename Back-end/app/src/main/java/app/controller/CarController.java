@@ -11,58 +11,59 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/car")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CarController {
 
     @Autowired
     private CarService carService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Car>> findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<Car> listCar = this.carService.findAll();
-            return new ResponseEntity<>(listCar, HttpStatus.OK);
+            return ResponseEntity.ok(listCar);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Car> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             Car car = this.carService.findById(id);
-            return new ResponseEntity<>(car, HttpStatus.OK);
+            return ResponseEntity.ok(car);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/findByName")
-    public ResponseEntity<List<Car>> findByName(@RequestParam String name) {
+    public ResponseEntity<?> findByName(@RequestParam String name) {
         try {
             List<Car> listCar = this.carService.findByName(name);
-            return new ResponseEntity<>(listCar, HttpStatus.OK);
+            return ResponseEntity.ok(listCar);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/findByBrand")
-    public ResponseEntity<List<Car>> findByBrand(@RequestParam Long idBrand) {
+    public ResponseEntity<?> findByBrand(@RequestParam Long idBrand) {
         try {
             List<Car> listCar = this.carService.findByBrand(idBrand);
-            return new ResponseEntity<>(listCar, HttpStatus.OK);
+            return ResponseEntity.ok(listCar);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/findAboveYear")
-    public ResponseEntity<List<Car>> findAboveYear(@RequestParam int year) {
+    public ResponseEntity<?> findAboveYear(@RequestParam int year) {
         try {
             List<Car> listCar = this.carService.findAboveYear(year);
-            return new ResponseEntity<>(listCar, HttpStatus.OK);
+            return ResponseEntity.ok(listCar);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -70,9 +71,10 @@ public class CarController {
     public ResponseEntity<String> create(@RequestBody Car car) {
         try {
             String mensagem = this.carService.create(car);
-            return new ResponseEntity<>(mensagem, HttpStatus.CREATED);
+            // Retorna um 201 Created
+            return ResponseEntity.status(HttpStatus.CREATED).body(mensagem);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -80,9 +82,9 @@ public class CarController {
     public ResponseEntity<String> update(@RequestBody Car car, @PathVariable Long id){
         try {
             String mensagem = this.carService.update(car, id);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
+            return ResponseEntity.ok(mensagem);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -90,9 +92,9 @@ public class CarController {
     public ResponseEntity<String> delete(@PathVariable Long id){
         try {
             String mensagem = this.carService.delete(id);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
+            return ResponseEntity.ok(mensagem);
         } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
