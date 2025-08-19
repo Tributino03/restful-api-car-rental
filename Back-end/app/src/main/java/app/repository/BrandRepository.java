@@ -9,12 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Long> {
+public interface BrandRepository extends JpaRepository <Brand, Long> {
 
-    public List<Car> findByName(String name);
+    public List<Brand> findByName(String name);
 
-    public List<Car> findByBrand(Brand brand);
-
-    @Query("FROM Car c WHERE c.year > :year")
-    public List<Car> findAboveYear (int year);
 }

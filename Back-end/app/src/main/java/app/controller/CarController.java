@@ -82,7 +82,7 @@ public class CarController {
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@RequestBody Car car, @PathVariable Long id){
         try {
-            String mensagem = this.carService.update(car, id);
+            String mensagem = this.carService.update(id, car);
             return ResponseEntity.ok(mensagem);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
