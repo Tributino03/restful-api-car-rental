@@ -1,7 +1,6 @@
-// Em app/service/FipeApiService.java
 package app.service;
 
-import app.dto.BrandApiDTO;
+import app.dto.FipeBrandDTO;
 import app.dto.ModelosApiResponseDTO;
 import app.entity.Brand;
 import app.entity.Car;
@@ -18,10 +17,10 @@ public class FipeApiService {
     private WebClient webClient;
 
     public void validateBrandNameExists(String brandName) {
-        List<BrandApiDTO> brandsFromApi = webClient.get()
+        List<FipeBrandDTO> brandsFromApi = webClient.get()
                 .uri("/carros/marcas")
                 .retrieve()
-                .bodyToFlux(BrandApiDTO.class)
+                .bodyToFlux(FipeBrandDTO.class) // Usa o DTO corrigido
                 .collectList()
                 .block();
 
@@ -30,13 +29,16 @@ public class FipeApiService {
         }
 
         boolean exists = brandsFromApi.stream()
-                .anyMatch(apiBrand -> apiBrand.name().toLowerCase().contains(brandName.toLowerCase()));
+                .anyMatch(apiBrand ->
+                        apiBrand.name() != null &&
+                                apiBrand.name().toLowerCase().contains(brandName.toLowerCase())
+                );
 
         if (!exists) {
             throw new IllegalArgumentException("Validação FIPE falhou: A marca '" + brandName + "' não é uma marca de carro válida.");
         }
     }
-    
+
     public void validateModelBelongsToBrand(Car car, Brand brand) {
         String uri = String.format("/carros/marcas/%d/modelos", brand.getFipeCode());
 
@@ -51,7 +53,10 @@ public class FipeApiService {
         }
 
         boolean modelExistsInBrand = apiResponse.modelos().stream()
-                .anyMatch(modelo -> car.getName().trim().equalsIgnoreCase(modelo.nome().trim()));
+                .anyMatch(modelo ->
+                        modelo.nome() != null &&
+                                car.getName().trim().equalsIgnoreCase(modelo.nome().trim())
+                );
 
         if (!modelExistsInBrand) {
             throw new IllegalArgumentException("Validação FIPE falhou: O modelo '" + car.getName() + "' não pertence à marca '" + brand.getName() + "'.");

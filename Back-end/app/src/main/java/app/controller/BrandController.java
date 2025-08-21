@@ -53,17 +53,17 @@ public class BrandController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody Brand brand) {
+    public ResponseEntity<?> create(@RequestBody Brand brand) {
         try {
             String mensagem = this.brandService.create(brand);
             return ResponseEntity.status(HttpStatus.CREATED).body(mensagem);
-        } catch (IllegalArgumentException | IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado no servidor.");
         }
     }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
