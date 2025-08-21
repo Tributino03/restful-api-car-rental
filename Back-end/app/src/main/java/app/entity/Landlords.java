@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -21,6 +22,15 @@ public class Landlords {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int year;
+    private LocalDate dateOfBirth;
+    @Column(unique = true, nullable = false)
     private String cpf;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+    @OneToMany(mappedBy = "landlord")
+    @JsonManagedReference("landlord-rentals")
+    private List<Rental> rentals;
 }

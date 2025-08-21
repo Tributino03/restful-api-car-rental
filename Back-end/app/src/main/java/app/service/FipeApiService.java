@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List; // Importe a List
+import java.util.List;
 
 @Service
 public class FipeApiService {
@@ -30,7 +30,7 @@ public class FipeApiService {
         }
 
         boolean exists = brandsFromApi.stream()
-                .anyMatch(apiBrand -> apiBrand.nome().toLowerCase().contains(brandName.toLowerCase()));
+                .anyMatch(apiBrand -> apiBrand.name().toLowerCase().contains(brandName.toLowerCase()));
 
         if (!exists) {
             throw new IllegalArgumentException("Validação FIPE falhou: A marca '" + brandName + "' não é uma marca de carro válida.");

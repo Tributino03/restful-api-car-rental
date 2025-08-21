@@ -1,4 +1,4 @@
 package app.dto;
 
-public record BrandApiDTO(String nome, String codigo) {
+public record BrandApiDTO(Long id, String name, String cnpj) {
 }

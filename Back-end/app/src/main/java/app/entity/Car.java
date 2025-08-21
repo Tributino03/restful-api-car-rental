@@ -23,9 +23,13 @@ public class Car {
     private Long id;
     private String name;
     private int year;
+    private Double vehicleValue;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    @ManyToOne
+    @JsonBackReference("brand-cars")
     private Brand brand;
 
+    @OneToMany(mappedBy = "car")
+    @JsonManagedReference("car-rentals")
+    private List<Rental> rentals;
 }

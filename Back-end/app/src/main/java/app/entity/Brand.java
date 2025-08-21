@@ -24,6 +24,6 @@ public class Brand {
     private Long fipeCode;
 
     @OneToMany(mappedBy = "brand")
-    @JsonManagedReference
+    @JsonManagedReference("brand-cars")
     private List<Car> cars;
 }

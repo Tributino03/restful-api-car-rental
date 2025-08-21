@@ -72,7 +72,6 @@ public class CarController {
     public ResponseEntity<String> create(@RequestBody Car car) {
         try {
             String mensagem = this.carService.create(car);
-            // Retorna um 201 Created
             return ResponseEntity.status(HttpStatus.CREATED).body(mensagem);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
