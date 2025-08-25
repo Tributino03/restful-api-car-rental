@@ -1,0 +1,58 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-3">
+                <div class="card-body p-4">
+                    <h3>Listagem de carros</h3>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary btn-floating" mdbRipple (click)="new()">
+                        <!--
+                        <button type="button" class="btn btn-primary btn-floating" mdbRipple routerLink="/admin/cars/new">
+                            -->
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <table border="3px" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Nome</td>
+                                <td>Acoes</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (car of lista; track $index) {
+                                <tr>
+                                    <td>{{car.id}}</td>
+                                    <td>{{car.name}}</td>
+                                    <td class="text-end">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-warning btn-sm" mdbRipple (click)="edit(car)">Editar</button>
+                                            <button type="button" class="btn btn-danger btn-sm" mdbRipple (click)="deleteById(car)">Deletar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #modalCarDetails>
+    <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+    <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modalRef.close()"
+    ></button>
+    </div>
+    <div class="modal-body">
+        <app-carsdetails [car]="carEdit" (retorno)="retornoDetails($event)"></app-carsdetails>
+    </div>
+</ng-template>

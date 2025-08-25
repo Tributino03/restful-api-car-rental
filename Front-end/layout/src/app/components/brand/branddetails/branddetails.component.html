@@ -1,0 +1,33 @@
+
+<div class="container">
+  <div class="row justify-content-center">
+
+    <div class="col-md-6 col-lg-12 mt-5">
+
+      <div class="card shadow-3">
+        <div class="card-body p-4">
+
+          <h3 class="text-center mb-4">Cadastro de marcas</h3>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="name" class="form-control" [(ngModel)]="brand.name"/>
+            <label mdbLabel class="form-label" for="name">Nome:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="number" id="fipeCode" [(ngModel)]="brand.fipeCode"/>
+            <label mdbLabel for="fipeCode">Código FIPE:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="cnpj" [(ngModel)]="brand.cnpj"/>
+            <label mdbLabel for="cnpj">CNPJ:</label>
+          </mdb-form-control>
+          <button type="button" class="btn btn-primary btn-block" mdbRipple (click)="save()">Salvar</button>
+          
+        </div>
+      </div>
+          
+    </div>
+  </div>
+</div>
