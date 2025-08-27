@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 mt-5">
+      <div class="card shadow-3">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-4">{{ isEditing ? 'Editar Endereço do Locador' : 'Novo Locador' }}</h3>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="name" class="form-control" [(ngModel)]="landlord.name" [readonly]="isEditing" />
+            <label mdbLabel class="form-label" for="name">Nome:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="cpf" class="form-control" [(ngModel)]="landlord.cpf" [readonly]="isEditing" />
+            <label mdbLabel class="form-label" for="cpf">CPF:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="date" id="dateOfBirth" class="form-control" [(ngModel)]="landlord.dateOfBirth" [readonly]="isEditing" />
+            <label mdbLabel class="form-label" for="dateOfBirth">Data de Nascimento:</label>
+          </mdb-form-control>
+
+          <hr>
+          <h5 class="mb-3">Endereço</h5>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="cep" class="form-control" [(ngModel)]="landlord.address.cep" (blur)="findAddressByCep()" maxlength="8" />
+            <label mdbLabel class="form-label" for="cep">CEP (apenas números):</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="street" class="form-control" [(ngModel)]="landlord.address.street" />
+            <label mdbLabel class="form-label" for="street">Rua:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="neighborhood" class="form-control" [(ngModel)]="landlord.address.neighborhood" />
+            <label mdbLabel class="form-label" for="neighborhood">Bairro:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="city" class="form-control" [(ngModel)]="landlord.address.city" />
+            <label mdbLabel class="form-label" for="city">Cidade:</label>
+          </mdb-form-control>
+          
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="state" class="form-control" [(ngModel)]="landlord.address.state" />
+            <label mdbLabel class="form-label" for="state">Estado:</label>
+          </mdb-form-control>
+          
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="number" class="form-control" [(ngModel)]="landlord.address.number" />
+            <label mdbLabel class="form-label" for="number">Número:</label>
+          </mdb-form-control>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="save()">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
