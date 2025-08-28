@@ -1,8 +1,7 @@
 package app.controller;
 
 import app.entity.Brand;
-import app.entity.Car;
-import app.service.BrandService; // Importe o BrandService
+import app.service.BrandService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,21 +12,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/brand")
-@CrossOrigin(origins = "*")
 public class BrandController {
 
     @Autowired
     private BrandService brandService;
 
     @GetMapping("/findAll")
-    public  ResponseEntity<?> findAll(){
+    public ResponseEntity<List<Brand>> findAll() {
         try {
             List<Brand> listBrand = brandService.findAll();
             return ResponseEntity.ok(listBrand);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
-
     }
 
     @GetMapping("/findById/{id}")
@@ -37,42 +34,33 @@ public class BrandController {
             return ResponseEntity.ok(brand);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao buscar a marca: " + e.getMessage());
         }
     }
 
     @GetMapping("/findByName")
     public ResponseEntity<List<Brand>> findByName(@RequestParam String name) {
-        try {
-            List<Brand> lista = this.brandService.findByName(name);
-            return ResponseEntity.ok(lista);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(this.brandService.findByName(name));
     }
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Brand brand) {
         try {
-            String mensagem = this.brandService.create(brand);
-            return ResponseEntity.status(HttpStatus.CREATED).body(mensagem);
+            Brand newBrand = this.brandService.create(brand);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newBrand);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado no servidor.");
         }
     }
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
-            String mensagem = this.brandService.delete(id);
-            return ResponseEntity.ok(mensagem);
+            this.brandService.delete(id);
+            return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

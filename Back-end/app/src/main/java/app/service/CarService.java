@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarService {
@@ -22,8 +23,9 @@ public class CarService {
     @Autowired
     private BrandRepository brandRepository;
 
-    public List<Car> findAll(){
-        return this.carRepository.findAll();
+    public List<CarDTO> findAll() {
+        List<Car> cars = carRepository.findAll();
+        return cars.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     public Car findById(Long id){
@@ -34,44 +36,55 @@ public class CarService {
     public List<Car> findByName(String name){
         return this.carRepository.findByName(name);
     }
-
     public List<Car> findByBrand(Long idBrand){
         Brand brand = new Brand();
         brand.setId(idBrand);
         return this.carRepository.findByBrand(brand);
     }
-
     public List<Car> findAboveYear(int year){
         return this.carRepository.findAboveYear(year);
     }
 
-    public String create(Car car) {
+    public Car create(Car car) {
         Brand brandFromDb = brandRepository.findById(car.getBrand().getId())
                 .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + car.getBrand().getId() + " não foi encontrada no banco."));
 
         car.setBrand(brandFromDb);
-
         fipeApiService.validateModelBelongsToBrand(car, brandFromDb);
 
-        this.carRepository.save(car);
-        return "Car registered successfully.";
+        return this.carRepository.save(car);
     }
 
-    public String update(Long id, Car car){
-        Car carUpdate = this.findById(id);
+    public Car update(Long id, Car carDetails) {
+        Car carFromDb = this.findById(id);
 
-        carUpdate.setName(car.getName());
-        carUpdate.setYear(car.getYear());
-        carUpdate.setBrand(car.getBrand());
+        Brand brandFromDb = brandRepository.findById(carDetails.getBrand().getId())
+                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDetails.getBrand().getId() + " não foi encontrada no banco."));
 
-        this.carRepository.save(carUpdate);
+        fipeApiService.validateModelBelongsToBrand(carDetails, brandFromDb);
 
-        return "Car updated successfully";
+        carFromDb.setName(carDetails.getName());
+        carFromDb.setYear(carDetails.getYear());
+        carFromDb.setVehicleValue(carDetails.getVehicleValue());
+        carFromDb.setBrand(brandFromDb);
+        return this.carRepository.save(carFromDb);
     }
 
-    public String delete(Long id){
+    public void delete(Long id){
         Car car = this.findById(id);
         this.carRepository.delete(car);
-        return "Car deleted successfully";
+    }
+
+    private CarDTO convertToDTO(Car car) {
+        BrandDTO brandDTO = null;
+        if (car.getBrand() != null) {
+            brandDTO = new BrandDTO(car.getBrand().getId(), car.getBrand().getName(), car.getBrand().getCnpj());
+        }
+
+        List<RentalDTO> rentalDTOs = (car.getRentals() != null) ? car.getRentals().stream()
+                .map(rental -> new RentalDTO(rental.getId(), rental.getStartDate(), rental.getReturnDate(), rental.getStatus()))
+                .collect(Collectors.toList()) : Collections.emptyList();
+
+        return new CarDTO(car.getId(), car.getName(), car.getYear(), brandDTO, rentalDTOs);
     }
 }

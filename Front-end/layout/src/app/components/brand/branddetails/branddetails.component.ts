@@ -5,66 +5,44 @@ import { Brand } from '../../../models/brand';
 import { BrandService } from '../../../services/brand.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-branddetails',
-  imports: [MdbFormsModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, MdbFormsModule, FormsModule], 
   templateUrl: './branddetails.component.html',
-  styleUrl: './branddetails.component.scss'
+  styleUrls: ['./branddetails.component.scss']
 })
 export class BranddetailsComponent {
 
-  @Input("brand") brand: Brand = new Brand();
-  @Output("retorno") retorno = new EventEmitter<any>();
+  @Input() brand: Brand = new Brand();
+  @Output() retorno = new EventEmitter<Brand>();
 
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private brandService = inject(BrandService);
+  constructor() {}
 
-  constructor() {
-    const id = this.route.snapshot.params['id'];
-    if (id > 0) {
-      this.findById(id);
-    }
-  }
-
-  findById(id: number) {
-    this.brandService.findById(id).subscribe({
-      next: brand => {
-        this.brand = brand;
+  save() {
+    this.brandService.create(this.brand).subscribe({
+      next: brandSalva => {
+        Swal.fire({
+          title: 'Salvo com sucesso!',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        }).then(() => {
+          this.retorno.emit(brandSalva);
+        });
       },
       error: erro => {
+        const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido. Verifique o console.';
+        
         Swal.fire({
-          title: 'Não encontrado!',
-          text: `Ocorreu um erro ao tentar localizar o carro com ID ${id}.`,
+          title: 'Erro!',
+          text: `Ocorreu um erro ao salvar: ${errorMessage}`,
           icon: 'error',
           confirmButtonText: 'Ok'
         });
       }
     });
   }
-
-  save() {
-  this.brandService.create(this.brand).subscribe({
-    next: brandSalva => {
-      Swal.fire({
-        title: 'Salvo com sucesso!',
-        icon: 'success',
-        confirmButtonText: 'Ok'
-      }).then(() => {
-        this.retorno.emit(brandSalva); 
-      });
-    },
-    error: erro => {
-      Swal.fire({
-        title: 'Erro!',
-        text: 'Ocorreu um erro ao salvar: ' + erro.error,
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      });
-    }
-  });
-}
-
 }

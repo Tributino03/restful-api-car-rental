@@ -70,13 +70,14 @@ export class CarsdetailsComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {
-          this.retorno.emit(carSalvo); 
+          this.retorno.emit(carSalvo);
         });
       },
       error: erro => {
+        const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido.';
         Swal.fire({
           title: 'Erro!',
-          text: `Ocorreu um erro ao salvar: ${erro.error}`,
+          text: `Ocorreu um erro ao salvar: ${errorMessage}`,
           icon: 'error',
           confirmButtonText: 'Ok'
         });

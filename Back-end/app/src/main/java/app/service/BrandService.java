@@ -35,18 +35,17 @@ public class BrandService {
         return brandRepository.findByName(name);
     }
 
-    public String create(Brand brand) {
+    public Brand create(Brand brand) {
         fipeApiService.validateBrandNameExists(brand.getName());
 
         if (!this.brandRepository.findByName(brand.getName()).isEmpty()) {
             throw new IllegalArgumentException("Esta marca já está cadastrada no sistema.");
         }
 
-        this.brandRepository.save(brand);
-        return "Marca cadastrada com sucesso";
+        return this.brandRepository.save(brand);
     }
 
-    public String delete(Long id) {
+    public void delete(Long id) {
         Brand brandToDelete = this.findById(id);
 
         List<Car> carsAssociated = this.carRepository.findByBrand(brandToDelete);
@@ -55,6 +54,5 @@ public class BrandService {
         }
 
         this.brandRepository.delete(brandToDelete);
-        return "Marca deletada com sucesso";
     }
 }

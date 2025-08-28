@@ -2,6 +2,7 @@ package app.controller;
 
 import app.entity.Car;
 import app.service.CarService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +13,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/car")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class CarController {
 
     @Autowired
     private CarService carService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<CarDTO>> findAll() { 
         try {
-            List<Car> listCar = this.carService.findAll();
+            List<CarDTO> listCar = this.carService.findAll();
             return ResponseEntity.ok(listCar);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -33,11 +34,10 @@ public class CarController {
         try {
             Car car = this.carService.findById(id);
             return ResponseEntity.ok(car);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
     @GetMapping("/findByName")
     public ResponseEntity<?> findByName(@RequestParam String name) {
         try {
@@ -69,32 +69,32 @@ public class CarController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody Car car) {
+    public ResponseEntity<?> create(@RequestBody Car car) {
         try {
-            String mensagem = this.carService.create(car);
-            return ResponseEntity.status(HttpStatus.CREATED).body(mensagem);
+            Car newCar = this.carService.create(car);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newCar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> update(@RequestBody Car car, @PathVariable Long id){
+    @PutMapping("/update/{id}") // URL ajustada para o padrão
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Car car){
         try {
-            String mensagem = this.carService.update(id, car);
-            return ResponseEntity.ok(mensagem);
+            Car updatedCar = this.carService.update(id, car);
+            return ResponseEntity.ok(updatedCar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         try {
-            String mensagem = this.carService.delete(id);
-            return ResponseEntity.ok(mensagem);
+            this.carService.delete(id);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null); // Corpo vazio para erros
         }
     }
 }
