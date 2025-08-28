@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 mt-5">
+      <div class="card shadow-3">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-4">Novo Aluguel</h3>
+
+          <label class="form-label">Selecione o Carro:</label>
+          <select class="form-select mb-4" [(ngModel)]="rental.car" [compareWith]="compareById" required>
+            <option [ngValue]="undefined" disabled>Selecione um carro...</option>
+            @for (car of carList; track car.id) {
+              <option [ngValue]="car">{{ car.name }} (Ano: {{ car.year }})</option>
+            }
+          </select>
+
+          <label class="form-label">Selecione o Locador:</label>
+          <select class="form-select mb-4" [(ngModel)]="rental.landlord" [compareWith]="compareById" required>
+            <option [ngValue]="undefined" disabled>Selecione um locador...</option>
+            @for (landlord of landlordList; track landlord.id) {
+              <option [ngValue]="landlord">{{ landlord.name }}</option>
+            }
+          </select>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="datetime-local" id="startDate" class="form-control" [(ngModel)]="rental.startDate" />
+            <label mdbLabel class="form-label" for="startDate">Data e Hora de Início:</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="datetime-local" id="returnDate" class="form-control" [(ngModel)]="rental.returnDate" />
+            <label mdbLabel class="form-label" for="returnDate">Data e Hora de Devolução:</label>
+          </mdb-form-control>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="save()">Registrar Aluguel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
