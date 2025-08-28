@@ -20,6 +20,7 @@ export const routes: Routes = [
         {path: "brand/edit/:id", component: BranddetailsComponent},
         {path: "landlords", component: LandlordslistComponent},
         {path: "landlords/new", component: LandlordsdetailsComponent},
-        {path: "landlords/edit/:id", component: LandlordsdetailsComponent}
+        {path: "landlords/edit/:id", component: LandlordsdetailsComponent},
+        
     ]}
 ];
