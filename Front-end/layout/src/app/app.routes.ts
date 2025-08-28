@@ -7,6 +7,8 @@ import { BrandlistComponent } from './components/brand/brandlist/brandlist.compo
 import { BranddetailsComponent } from './components/brand/branddetails/branddetails.component';
 import { LandlordslistComponent } from './components/landlords/landlordslist/landlordslist.component';
 import { LandlordsdetailsComponent } from './components/landlords/landlordsdetails/landlordsdetails.component';
+import { RentallistComponent } from './components/rentals/rentallist/rentallist.component';
+import { RentaldetailsComponent } from './components/rentals/rentaldetails/rentaldetails.component';
 
 export const routes: Routes = [
     {path : "", redirectTo: "login", pathMatch: "full"},
@@ -21,6 +23,7 @@ export const routes: Routes = [
         {path: "landlords", component: LandlordslistComponent},
         {path: "landlords/new", component: LandlordsdetailsComponent},
         {path: "landlords/edit/:id", component: LandlordsdetailsComponent},
-        
+        {path: "rentals", component: RentallistComponent},
+        {path: "rentals/new", component: RentaldetailsComponent}
     ]}
 ];
