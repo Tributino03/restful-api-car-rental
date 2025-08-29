@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.RentalResponseDTO;
 import app.entity.Rental;
 import app.service.RentalService;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rental")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class RentalController {
 
     @Autowired
@@ -29,14 +29,14 @@ public class RentalController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Rental>> findAll() {
+    public ResponseEntity<List<RentalResponseDTO>> findAll() {
         return ResponseEntity.ok(rentalService.findAll());
     }
 
     @GetMapping("/car/{carId}")
     public ResponseEntity<?> findByCarId(@PathVariable Long carId) {
         try {
-            List<Rental> rentals = rentalService.findByCarId(carId);
+            List<RentalResponseDTO> rentals = rentalService.findByCarId(carId);
             return ResponseEntity.ok(rentals);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -46,7 +46,7 @@ public class RentalController {
     @GetMapping("/landlord/{landlordId}")
     public ResponseEntity<?> findByLandlordId(@PathVariable Long landlordId) {
         try {
-            List<Rental> rentals = rentalService.findByLandlordId(landlordId);
+            List<RentalResponseDTO> rentals = rentalService.findByLandlordId(landlordId);
             return ResponseEntity.ok(rentals);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

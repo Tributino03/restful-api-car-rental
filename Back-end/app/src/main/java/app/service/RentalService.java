@@ -1,5 +1,8 @@
 package app.service;
 
+import app.dto.CarSimpleDTO;
+import app.dto.LandlordSimpleDTO;
+import app.dto.RentalResponseDTO;
 import app.entity.Car;
 import app.entity.Landlords;
 import app.entity.Rental;
@@ -13,6 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RentalService {
@@ -22,36 +26,36 @@ public class RentalService {
     @Autowired
     private CarRepository carRepository;
     @Autowired
-    private LandLordsRepository landLordsRepository;
+    private LandLordsRepository landlordsRepository;
 
     public Rental findById(Long id) {
         return rentalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aluguel não encontrado com o ID: " + id));
     }
 
-    public List<Rental> findAll() {
-        return rentalRepository.findAll();
+    public List<RentalResponseDTO> findAll() {
+        return rentalRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public List<Rental> findByCarId(Long carId) {
+    public List<RentalResponseDTO> findByCarId(Long carId) {
         if (!carRepository.existsById(carId)) {
             throw new EntityNotFoundException("Carro não encontrado com o ID: " + carId);
         }
-        return rentalRepository.findByCar_Id(carId);
+        return rentalRepository.findByCar_Id(carId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public List<Rental> findByLandlordId(Long landlordId) {
-        if (!landLordsRepository.existsById(landlordId)) {
+    public List<RentalResponseDTO> findByLandlordId(Long landlordId) {
+        if (!landlordsRepository.existsById(landlordId)) {
             throw new EntityNotFoundException("Locador não encontrado com o ID: " + landlordId);
         }
-        return rentalRepository.findByLandlord_Id(landlordId);
+        return rentalRepository.findByLandlord_Id(landlordId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     public Rental create(Rental rentalRequest) {
         Car car = carRepository.findById(rentalRequest.getCar().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado."));
 
-        Landlords landlord = landLordsRepository.findById(rentalRequest.getLandlord().getId())
+        Landlords landlord = landlordsRepository.findById(rentalRequest.getLandlord().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Locador não encontrado."));
 
         List<Rental> overlappingRentals = rentalRepository.findOverlappingRentals(car.getId(), rentalRequest.getStartDate(), rentalRequest.getReturnDate());
@@ -90,5 +94,21 @@ public class RentalService {
             }
         }
         return totalValue;
+    }
+
+    private RentalResponseDTO convertToDTO(Rental rental) {
+        CarSimpleDTO carDTO = new CarSimpleDTO(rental.getCar().getId(), rental.getCar().getName());
+
+        LandlordSimpleDTO landlordDTO = new LandlordSimpleDTO(rental.getLandlord().getId(), rental.getLandlord().getName());
+
+        return new RentalResponseDTO(
+                rental.getId(),
+                rental.getStartDate(),
+                rental.getReturnDate(),
+                rental.getTotalValue(),
+                rental.getStatus(),
+                carDTO,
+                landlordDTO
+        );
     }
 }
