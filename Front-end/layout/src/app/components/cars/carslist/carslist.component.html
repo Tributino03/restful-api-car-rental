@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-4">
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow-3">
@@ -16,7 +16,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nome</th>
-                                <th>Marca</th> <th class="text-end">Ações</th>
+                                <th>Marca</th>
+                                <th>Ano</th> <th class="text-end">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,7 +25,8 @@
                                 <tr>
                                     <td>{{car.id}}</td>
                                     <td>{{car.name}}</td>
-                                    <td>{{car.brand.name}}</td> <td class="text-end">
+                                    <td>{{car.brand?.name}}</td>
+                                    <td>{{car.year}}</td> <td class="text-end">
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-warning btn-sm" mdbRipple (click)="edit(car)">Editar</button>
                                             <button type="button" class="btn btn-danger btn-sm" mdbRipple (click)="deleteById(car)">Deletar</button>
@@ -42,11 +44,16 @@
 </div>
 
 <ng-template #modalCarDetails>
-  <div class="modal-header">
-    <h5 class="modal-title">{{ carEdit.id > 0 ? 'Editar Carro' : 'Novo Carro' }}</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
-  </div>
-  <div class="modal-body">
-    <app-carsdetails [car]="carEdit" (retorno)="retornoDetails($event)"></app-carsdetails>
-  </div>
+    <div class="modal-header">
+        <h5 class="modal-title">{{ carEdit.id > 0 ? 'Editar Carro' : 'Novo Carro' }}</h5>
+        <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="modalRef.close()"
+        ></button>
+    </div>
+    <div class="modal-body">
+        <app-carsdetails [car]="carEdit" (retorno)="retornoDetails($event)"></app-carsdetails>
+    </div>
 </ng-template>

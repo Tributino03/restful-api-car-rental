@@ -4,7 +4,6 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-
 import { Car } from '../../../models/car';
 import { Brand } from '../../../models/brand';
 import { CarService } from '../../../services/car.service';
@@ -26,17 +25,15 @@ export class CarsdetailsComponent implements OnInit {
   brandList: Brand[] = [];
   isEditing: boolean = false;
 
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private carService = inject(CarService);
   private brandService = inject(BrandService);
 
+  constructor() {}
+
   ngOnInit(): void {
     this.loadBrandList();
-    const id = this.route.snapshot.params['id'];
-    if (id > 0) {
+    if (this.car && this.car.id > 0) {
       this.isEditing = true;
-      this.findById(id);
     }
   }
 
@@ -44,13 +41,6 @@ export class CarsdetailsComponent implements OnInit {
     this.brandService.listAll().subscribe({
       next: brands => { this.brandList = brands; },
       error: () => { Swal.fire('Erro!', 'Ocorreu um erro ao carregar a lista de marcas.', 'error'); }
-    });
-  }
-
-  findById(id: number) {
-    this.carService.findById(id).subscribe({
-      next: car => { this.car = car; },
-      error: () => { Swal.fire('Não encontrado!', `Ocorreu um erro ao localizar o carro com ID ${id}.`, 'error'); }
     });
   }
 

@@ -5,29 +5,32 @@
         <div class="card-body p-4">
           <h3 class="text-center mb-4">{{ isEditing ? 'Editar Endereço do Locador' : 'Novo Locador' }}</h3>
 
+          <!-- Campos do Locador -->
           <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="name" class="form-control" [(ngModel)]="landlord.name" [readonly]="isEditing" />
+            <input mdbInput type="text" id="name" class="form-control" [(ngModel)]="landlord.name" [readonly]="isEditing" required />
             <label mdbLabel class="form-label" for="name">Nome:</label>
           </mdb-form-control>
 
           <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="cpf" class="form-control" [(ngModel)]="landlord.cpf" [readonly]="isEditing" />
+            <input mdbInput type="text" id="cpf" class="form-control" [(ngModel)]="landlord.cpf" [readonly]="isEditing" required />
             <label mdbLabel class="form-label" for="cpf">CPF:</label>
           </mdb-form-control>
 
           <mdb-form-control class="mb-4">
-            <input mdbInput type="date" id="dateOfBirth" class="form-control" [(ngModel)]="landlord.dateOfBirth" [readonly]="isEditing" />
+            <input mdbInput type="date" id="dateOfBirth" class="form-control" [(ngModel)]="landlord.dateOfBirth" [readonly]="isEditing" required />
             <label mdbLabel class="form-label" for="dateOfBirth">Data de Nascimento:</label>
           </mdb-form-control>
 
           <hr>
           <h5 class="mb-3">Endereço</h5>
 
+          <!-- Campo de CEP com a correção -->
           <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="cep" class="form-control" [(ngModel)]="landlord.address.cep" (blur)="findAddressByCep()" maxlength="8" />
-            <label mdbLabel class="form-label" for="cep">CEP (apenas números):</label>
+            <input mdbInput type="text" id="cep" class="form-control" [(ngModel)]="landlord.address.cep" (blur)="findAddressByCep()" />
+            <label mdbLabel class="form-label" for="cep">CEP:</label>
           </mdb-form-control>
 
+          <!-- Outros campos de Endereço -->
           <mdb-form-control class="mb-4">
             <input mdbInput type="text" id="street" class="form-control" [(ngModel)]="landlord.address.street" />
             <label mdbLabel class="form-label" for="street">Rua:</label>

@@ -19,11 +19,22 @@ public class AddressController {
     @GetMapping("/cep/{cep}")
     public ResponseEntity<ViaCepDTO> findByCep(@PathVariable String cep) {
         try {
+            String cleanCep = cep.replaceAll("\\D", "");
+
+            if (cleanCep.length() == 7) {
+                cleanCep = "0" + cleanCep;
+            }
+
+            if (cleanCep.length() != 8) {
+                return ResponseEntity.badRequest().build();
+            }
+
             ViaCepDTO address = this.webClient.get()
-                    .uri("/{cep}/json/", cep)
+                    .uri("/{cep}/json/", cleanCep)
                     .retrieve()
                     .bodyToMono(ViaCepDTO.class)
                     .block();
+
             return ResponseEntity.ok(address);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

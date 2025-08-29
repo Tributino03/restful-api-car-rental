@@ -1,5 +1,8 @@
 package app.service;
 
+import app.dto.BrandDTO;
+import app.dto.CarDTO;
+import app.dto.RentalDTO;
 import app.entity.Brand;
 import app.entity.Car;
 import app.repository.BrandRepository;
@@ -8,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

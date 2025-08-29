@@ -39,17 +39,35 @@ export class LandlordsdetailsComponent implements OnInit {
   }
 
   findAddressByCep() {
-    if (this.landlord.address.cep && this.landlord.address.cep.length === 8) {
-      this.landlordService.findByCep(this.landlord.address.cep).subscribe({
-        next: viaCepDto => {
+    if (!this.landlord.address.cep) {
+      return;
+    }
+
+    let cleanCep = this.landlord.address.cep.replace(/\D/g, '');
+
+    if (cleanCep.length === 7) {
+      cleanCep = '0' + cleanCep;
+    }
+
+    if (cleanCep.length !== 8) {
+      return;
+    }
+
+    this.landlordService.findByCep(cleanCep).subscribe({
+      next: viaCepDto => {
+        if (viaCepDto && viaCepDto.cep) {
           this.landlord.address.street = viaCepDto.logradouro;
           this.landlord.address.neighborhood = viaCepDto.bairro;
           this.landlord.address.city = viaCepDto.localidade;
           this.landlord.address.state = viaCepDto.uf;
-        },
-        error: () => { Swal.fire('CEP não encontrado', 'Não foi possível encontrar o endereço para o CEP informado.', 'warning'); }
-      });
-    }
+        } else {
+          Swal.fire('CEP não encontrado', 'O CEP informado é inválido.', 'warning');
+        }
+      },
+      error: () => {
+        Swal.fire('Erro na busca', 'Não foi possível consultar o CEP informado.', 'error');
+      }
+    });
   }
 
   save() {

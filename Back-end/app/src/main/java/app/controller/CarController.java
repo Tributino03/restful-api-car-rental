@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.CarDTO;
 import app.entity.Car;
 import app.service.CarService;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,7 +21,7 @@ public class CarController {
     private CarService carService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<CarDTO>> findAll() { 
+    public ResponseEntity<List<CarDTO>> findAll() {
         try {
             List<CarDTO> listCar = this.carService.findAll();
             return ResponseEntity.ok(listCar);
