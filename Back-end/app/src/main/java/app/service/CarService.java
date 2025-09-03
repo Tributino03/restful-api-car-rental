@@ -50,6 +50,10 @@ public class CarService {
     }
 
     public Car create(Car car) {
+        if (car.getBrand() == null || car.getBrand().getId() == null || car.getBrand().getId() == 0) {
+            throw new IllegalArgumentException("A marca do carro precisa ser selecionada.");
+        }
+
         Brand brandFromDb = brandRepository.findById(car.getBrand().getId())
                 .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + car.getBrand().getId() + " não foi encontrada no banco."));
 

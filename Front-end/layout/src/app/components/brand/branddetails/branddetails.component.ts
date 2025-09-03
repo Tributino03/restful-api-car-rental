@@ -3,14 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { Brand } from '../../../models/brand';
 import { BrandService } from '../../../services/brand.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-branddetails',
   standalone: true,
-  imports: [CommonModule, MdbFormsModule, FormsModule], 
+  imports: [CommonModule, MdbFormsModule, FormsModule],
   templateUrl: './branddetails.component.html',
   styleUrls: ['./branddetails.component.scss']
 })
@@ -20,30 +19,33 @@ export class BranddetailsComponent {
   @Output() retorno = new EventEmitter<Brand>();
 
   private brandService = inject(BrandService);
-  constructor() {}
 
   save() {
   this.brandService.create(this.brand).subscribe({
     next: brandSalva => {
+      this.retorno.emit(brandSalva);
+
       Swal.fire({
         title: 'Salvo com sucesso!',
         icon: 'success',
         confirmButtonText: 'Ok'
-      }).then(() => {
-        this.retorno.emit(brandSalva); // EMITE O EVENTO DE SUCESSO
       });
     },
     error: erro => {
-      const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido. Verifique o console.';
+      const errorMessage = (typeof erro.error === 'string')
+        ? erro.error
+        : 'Ocorreu um erro desconhecido.';
+
+      this.retorno.emit(new Brand());
+
       Swal.fire({
         title: 'Erro!',
         text: `Ocorreu um erro ao salvar: ${errorMessage}`,
         icon: 'error',
         confirmButtonText: 'Ok'
-      }).then(() => {
-        this.retorno.emit(new Brand()); 
       });
     }
   });
 }
+
 }

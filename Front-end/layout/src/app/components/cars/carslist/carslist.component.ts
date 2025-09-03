@@ -1,10 +1,10 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Car } from '../../../models/car';
 import Swal from 'sweetalert2';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { CarsdetailsComponent } from "../carsdetails/carsdetails.component";
 import { CarService } from '../../../services/car.service';
-import { CommonModule } from '@angular/common';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
 
 @Component({
@@ -42,10 +42,7 @@ export class CarslistComponent {
       text: "Esta ação não pode ser revertida!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sim, excluir!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Sim, excluir!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.carService.delete(car.id).subscribe({
@@ -69,8 +66,8 @@ export class CarslistComponent {
     this.modalRef = this.modalService.open(this.modalCarDetails);
   }
 
- retornoDetails(car: Car) {
-  this.listAll();
-  this.modalRef.close();
-}
+  retornoDetails(car: Car) {
+    this.listAll();
+    this.modalRef.close();
+  }
 }

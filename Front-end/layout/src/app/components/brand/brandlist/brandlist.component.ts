@@ -1,5 +1,5 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'; // <-- IMPORTANTE
+import { CommonModule } from '@angular/common';
 import { Brand } from '../../../models/brand';
 import Swal from 'sweetalert2';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
@@ -9,13 +9,8 @@ import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
 
 @Component({
   selector: 'app-brandlist',
-  standalone: true, // <-- IMPORTANTE: Declare como standalone
-  imports: [
-    CommonModule, // <-- IMPORTANTE: Necessário para o @for funcionar
-    MdbModalModule,
-    BranddetailsComponent,
-    MdbRippleModule
-  ],
+  standalone: true,
+  imports: [CommonModule, MdbModalModule, BranddetailsComponent, MdbRippleModule],
   templateUrl: './brandlist.component.html',
   styleUrls: ['./brandlist.component.scss']
 })
@@ -25,8 +20,7 @@ export class BrandlistComponent {
   brandEdit: Brand = new Brand();
 
   modalService = inject(MdbModalService);
-  // Garanta que o nome da referência no HTML é "modalBrandDetails"
-  @ViewChild("modalBrandDetails") modalBrandDetails!: TemplateRef<any>; 
+  @ViewChild("modalBrandDetails") modalBrandDetails!: TemplateRef<any>;
   modalRef!: MdbModalRef<any>;
 
   brandService = inject(BrandService);
@@ -37,16 +31,8 @@ export class BrandlistComponent {
 
   listAll() {
     this.brandService.listAll().subscribe({
-      next: lista => {
-        this.lista = lista;
-      },
-      error: err => {
-        Swal.fire({
-          title: 'Erro!',
-          text: 'Ocorreu um erro ao carregar a lista de marcas.',
-          icon: 'error'
-        });
-      },
+      next: lista => { this.lista = lista; },
+      error: () => { Swal.fire('Erro!', 'Ocorreu um erro ao carregar a lista de marcas.', 'error'); }
     });
   }
 
@@ -56,10 +42,7 @@ export class BrandlistComponent {
       text: "Esta ação não pode ser revertida!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sim, excluir!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Sim, excluir!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.brandService.delete(brand.id).subscribe({
@@ -67,9 +50,7 @@ export class BrandlistComponent {
             Swal.fire('Deletado!', 'A marca foi deletada com sucesso.', 'success');
             this.listAll();
           },
-          error: (err) => {
-            Swal.fire('Erro!', `Não foi possível deletar: ${err.error}`, 'error');
-          }
+          error: (err) => { Swal.fire('Erro!', `Não foi possível deletar: ${err.error}`, 'error'); }
         });
       }
     });
@@ -80,14 +61,9 @@ export class BrandlistComponent {
     this.modalRef = this.modalService.open(this.modalBrandDetails);
   }
 
-  edit(brand: Brand) {
-    // A tela de edição de marca não foi implementada ainda, então este botão pode ser adicionado depois
-    this.brandEdit = Object.assign({}, brand);
-    this.modalRef = this.modalService.open(this.modalBrandDetails);
+  // O retorno do modal (sucesso ou erro) aciona este método
+  retornoDetails(brand: Brand) {
+    this.listAll(); // ATUALIZA A LISTA
+    this.modalRef.close(); // FECHA O MODAL
   }
-
- retornoDetails(brand: Brand) { 
-  this.listAll();
-  this.modalRef.close();
-}
 }

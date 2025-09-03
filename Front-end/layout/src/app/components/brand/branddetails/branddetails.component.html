@@ -1,32 +1,20 @@
+<form #brandForm="ngForm">
+  <mdb-form-control class="mb-4">
+    <input mdbInput type="text" id="name" name="name" class="form-control" [(ngModel)]="brand.name" required />
+    <label mdbLabel class="form-label" for="name">Nome:</label>
+  </mdb-form-control>
 
-<div class="container">
-  <div class="row justify-content-center">
+  <mdb-form-control class="mb-4">
+    <input mdbInput type="number" id="fipeCode" name="fipeCode" class="form-control" [(ngModel)]="brand.fipeCode" required />
+    <label mdbLabel class="form-label" for="fipeCode">Código FIPE:</label>
+  </mdb-form-control>
 
-    <div class="col-md-6 col-lg-12 mt-5">
+  <mdb-form-control class="mb-4">
+    <input mdbInput type="text" id="cnpj" name="cnpj" class="form-control" [(ngModel)]="brand.cnpj" required />
+    <label mdbLabel class="form-label" for="cnpj">CNPJ:</label>
+  </mdb-form-control>
 
-      <div class="card shadow-3">
-        <div class="card-body p-4">
-
-          <h3 class="text-center mb-4">Cadastro de marcas</h3>
-
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="name" class="form-control" [(ngModel)]="brand.name"/>
-            <label mdbLabel class="form-label" for="name">Nome:</label>
-          </mdb-form-control>
-
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="fipeCode" class="form-control" [(ngModel)]="brand.fipeCode"/>
-            <label mdbLabel class="form-label" for="fipeCode">Código FIPE:</label>
-          </mdb-form-control>
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="cnpj" class="form-control" [(ngModel)]="brand.cnpj"/>
-            <label mdbLabel class="form-label" for="cnpj">CNPJ:</label>
-          </mdb-form-control>
-          <button type="button" class="btn btn-primary btn-block" mdbRipple (click)="save()">Salvar</button>
-          
-        </div>
-      </div>
-          
-    </div>
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-primary" mdbRipple (click)="save()" [disabled]="!brandForm.form.valid">Salvar</button>
   </div>
-</div>
+</form>

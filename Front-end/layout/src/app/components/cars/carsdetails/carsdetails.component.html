@@ -1,40 +1,39 @@
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-8 mt-5">
-      <div class="card shadow-3">
-        <div class="card-body p-4">
+    <div class="col-lg-12"> <div class="card shadow-3">
+        <form #carForm="ngForm">
+          <div class="card-body p-4">
+            <mdb-form-control class="mb-4">
+              <input mdbInput type="text" id="name" name="name" class="form-control" [(ngModel)]="car.name" required />
+              <label mdbLabel class="form-label" for="name">Nome do Modelo:</label>
+            </mdb-form-control>
 
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="name" class="form-control" [(ngModel)]="car.name" required />
-            <label mdbLabel class="form-label" for="name">Nome do Modelo:</label>
-          </mdb-form-control>
+            <mdb-form-control class="mb-4">
+              <input mdbInput type="number" id="year" name="year" class="form-control" [(ngModel)]="car.year" required />
+              <label mdbLabel class="form-label" for="year">Ano:</label>
+            </mdb-form-control>
 
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="number" id="year" class="form-control" [(ngModel)]="car.year" required />
-            <label mdbLabel class="form-label" for="year">Ano:</label>
-          </mdb-form-control>
+            <mdb-form-control class="mb-4">
+              <input mdbInput type="number" id="vehicleValue" name="vehicleValue" class="form-control" [(ngModel)]="car.vehicleValue" required />
+              <label mdbLabel class="form-label" for="vehicleValue">Valor do Veículo:</label>
+            </mdb-form-control>
 
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="number" id="vehicleValue" class="form-control" [(ngModel)]="car.vehicleValue" required />
-            <label mdbLabel class="form-label" for="vehicleValue">Valor do Veículo (ex: 85000.00):</label>
-          </mdb-form-control>
+            <select class="form-select mb-4"
+                    name="brand"
+                    [(ngModel)]="car.brand"
+                    [compareWith]="compareBrands"
+                    required>
+              <option [ngValue]="undefined" disabled selected>Selecione uma marca</option>
+              @for (brand of brandList; track brand.id) {
+                <option [ngValue]="brand">{{ brand.name }}</option>
+              }
+            </select>
 
-          <select class="form-select mb-4"
-                  aria-label="Selecione uma marca"
-                  [(ngModel)]="car.brand"
-                  [compareWith]="compareBrands"
-                  required>
-            <option [ngValue]="undefined" disabled>Selecione uma marca</option>
-            @for (brand of brandList; track brand.id) {
-              <option [ngValue]="brand">{{ brand.name }}</option>
-            }
-          </select>
-
-          <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-primary" mdbRipple (click)="save()">Salvar</button>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-primary" mdbRipple (click)="save()" [disabled]="!carForm.form.valid">Salvar</button>
+            </div>
           </div>
-
-        </div>
+        </form>
       </div>
     </div>
   </div>

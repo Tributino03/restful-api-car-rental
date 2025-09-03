@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { Car } from '../../../models/car';
@@ -28,8 +27,6 @@ export class CarsdetailsComponent implements OnInit {
   private carService = inject(CarService);
   private brandService = inject(BrandService);
 
-  constructor() {}
-
   ngOnInit(): void {
     this.loadBrandList();
     if (this.car && this.car.id > 0) {
@@ -44,37 +41,38 @@ export class CarsdetailsComponent implements OnInit {
     });
   }
 
-  save() {
-  let apiCall$: Observable<Car>;
-  if (this.isEditing) {
-    apiCall$ = this.carService.update(this.car);
-  } else {
-    apiCall$ = this.carService.create(this.car);
-  }
+save() {
+  const apiCall$ = this.isEditing
+    ? this.carService.update(this.car)
+    : this.carService.create(this.car);
 
   apiCall$.subscribe({
     next: carSalvo => {
+      this.retorno.emit(carSalvo);
+
       Swal.fire({
         title: 'Salvo com sucesso!',
         icon: 'success',
         confirmButtonText: 'Ok'
-      }).then(() => {
-        this.retorno.emit(carSalvo); // EMITE O EVENTO DE SUCESSO
       });
     },
     error: erro => {
-      const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido.';
+      const errorMessage = (typeof erro.error === 'string')
+        ? erro.error
+        : 'Ocorreu um erro desconhecido.';
+
+      this.retorno.emit(new Car());
+
       Swal.fire({
         title: 'Erro!',
         text: `Ocorreu um erro ao salvar: ${errorMessage}`,
         icon: 'error',
         confirmButtonText: 'Ok'
-      }).then(() => {
-        this.retorno.emit(new Car()); 
       });
     }
   });
 }
+
 
   compareBrands(b1: Brand, b2: Brand): boolean {
     return b1 && b2 ? b1.id === b2.id : b1 === b2;
