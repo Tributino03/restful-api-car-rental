@@ -23,26 +23,27 @@ export class BranddetailsComponent {
   constructor() {}
 
   save() {
-    this.brandService.create(this.brand).subscribe({
-      next: brandSalva => {
-        Swal.fire({
-          title: 'Salvo com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'Ok'
-        }).then(() => {
-          this.retorno.emit(brandSalva);
-        });
-      },
-      error: erro => {
-        const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido. Verifique o console.';
-        
-        Swal.fire({
-          title: 'Erro!',
-          text: `Ocorreu um erro ao salvar: ${errorMessage}`,
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-      }
-    });
-  }
+  this.brandService.create(this.brand).subscribe({
+    next: brandSalva => {
+      Swal.fire({
+        title: 'Salvo com sucesso!',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      }).then(() => {
+        this.retorno.emit(brandSalva); // EMITE O EVENTO DE SUCESSO
+      });
+    },
+    error: erro => {
+      const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido. Verifique o console.';
+      Swal.fire({
+        title: 'Erro!',
+        text: `Ocorreu um erro ao salvar: ${errorMessage}`,
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      }).then(() => {
+        this.retorno.emit(new Brand()); 
+      });
+    }
+  });
+}
 }

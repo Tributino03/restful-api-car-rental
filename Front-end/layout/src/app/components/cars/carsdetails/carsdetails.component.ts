@@ -45,35 +45,36 @@ export class CarsdetailsComponent implements OnInit {
   }
 
   save() {
-    let apiCall$: Observable<Car>;
-
-    if (this.isEditing) {
-      apiCall$ = this.carService.update(this.car);
-    } else {
-      apiCall$ = this.carService.create(this.car);
-    }
-
-    apiCall$.subscribe({
-      next: carSalvo => {
-        Swal.fire({
-          title: 'Salvo com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'Ok'
-        }).then(() => {
-          this.retorno.emit(carSalvo);
-        });
-      },
-      error: erro => {
-        const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido.';
-        Swal.fire({
-          title: 'Erro!',
-          text: `Ocorreu um erro ao salvar: ${errorMessage}`,
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-      }
-    });
+  let apiCall$: Observable<Car>;
+  if (this.isEditing) {
+    apiCall$ = this.carService.update(this.car);
+  } else {
+    apiCall$ = this.carService.create(this.car);
   }
+
+  apiCall$.subscribe({
+    next: carSalvo => {
+      Swal.fire({
+        title: 'Salvo com sucesso!',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      }).then(() => {
+        this.retorno.emit(carSalvo); // EMITE O EVENTO DE SUCESSO
+      });
+    },
+    error: erro => {
+      const errorMessage = (typeof erro.error === 'string') ? erro.error : 'Ocorreu um erro desconhecido.';
+      Swal.fire({
+        title: 'Erro!',
+        text: `Ocorreu um erro ao salvar: ${errorMessage}`,
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      }).then(() => {
+        this.retorno.emit(new Car()); 
+      });
+    }
+  });
+}
 
   compareBrands(b1: Brand, b2: Brand): boolean {
     return b1 && b2 ? b1.id === b2.id : b1 === b2;

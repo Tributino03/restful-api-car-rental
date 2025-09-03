@@ -86,8 +86,8 @@ export class BrandlistComponent {
     this.modalRef = this.modalService.open(this.modalBrandDetails);
   }
 
-  retornoDetails(brand: Brand) {
-    this.listAll();
-    this.modalRef.close();
-  }
+ retornoDetails(brand: Brand) { 
+  this.listAll();
+  this.modalRef.close();
+}
 }

@@ -69,8 +69,8 @@ export class CarslistComponent {
     this.modalRef = this.modalService.open(this.modalCarDetails);
   }
 
-  retornoDetails(car: Car) {
-    this.listAll();
-    this.modalRef.close(); 
-  }
+ retornoDetails(car: Car) {
+  this.listAll();
+  this.modalRef.close();
+}
 }

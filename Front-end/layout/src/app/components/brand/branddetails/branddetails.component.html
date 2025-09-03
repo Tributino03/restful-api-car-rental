@@ -15,13 +15,12 @@
           </mdb-form-control>
 
           <mdb-form-control class="mb-4">
-            <input mdbInput type="number" id="fipeCode" [(ngModel)]="brand.fipeCode"/>
-            <label mdbLabel for="fipeCode">Código FIPE:</label>
+            <input mdbInput type="text" id="fipeCode" class="form-control" [(ngModel)]="brand.fipeCode"/>
+            <label mdbLabel class="form-label" for="fipeCode">Código FIPE:</label>
           </mdb-form-control>
-
           <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="cnpj" [(ngModel)]="brand.cnpj"/>
-            <label mdbLabel for="cnpj">CNPJ:</label>
+            <input mdbInput type="text" id="cnpj" class="form-control" [(ngModel)]="brand.cnpj"/>
+            <label mdbLabel class="form-label" for="cnpj">CNPJ:</label>
           </mdb-form-control>
           <button type="button" class="btn btn-primary btn-block" mdbRipple (click)="save()">Salvar</button>
           
