@@ -1,7 +1,7 @@
-import { Landlord } from './landlord';
+import { Landlords } from './landlord';
 
 describe('Landlord', () => {
   it('should create an instance', () => {
-    expect(new Landlord()).toBeTruthy();
+    expect(new Landlords()).toBeTruthy();
   });
 });

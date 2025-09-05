@@ -8,12 +8,12 @@
         <h3 class="text-center mb-4">Login</h3>
 
         <mdb-form-control class="mb-4">
-          <input mdbInput type="text" id="usuario" class="form-control" [(ngModel)]="usuario"/>
+          <input mdbInput type="text" id="usuario" class="form-control" [(ngModel)]="login.username" (keyup.enter)="logar()"/>
           <label mdbLabel class="form-label" for="usuario">Usuário:</label>
         </mdb-form-control>
 
         <mdb-form-control class="mb-4">
-          <input mdbInput type="password" id="senha" class="form-control" [(ngModel)]="senha"/>
+          <input mdbInput type="password" id="senha" class="form-control" [(ngModel)]="login.password" (keyup.enter)="logar()"/>
           <label mdbLabel class="form-label" for="senha">Senha:</label>
         </mdb-form-control>
 

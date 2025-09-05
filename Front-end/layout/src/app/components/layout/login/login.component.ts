@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { LoginService } from '../../../auth/login.service';
+import { Login } from '../../../models/login';
 
 @Component({
   selector: 'app-login',
@@ -11,19 +13,32 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 })
 export class LoginComponent {
 
-  usuario!: string;
-  senha!: string;
+  login : Login = new Login();
 
   router = inject(Router);
 
+  loginService = inject(LoginService);
+
+  constructor() {
+    this.loginService.removerToken();
+  }
+
   logar(){
-    if(this.usuario == "admin" && this.senha == "admin"){
-      this.router.navigate(["admin/cars"]);
-    }else{
-      alert("usuario ou senha incorretos");
-    }
-  } 
+    
+    this.loginService.logar(this.login).subscribe({
+      next: token => {
+        if(token){
+          this.loginService.addToken(token);
+          this.router.navigate(['admin/cars']);
+        }else{
+          alert('usuário ou senhas incorretos!')
+        }
+      },
+      error: erro => {
+        alert('deu erro');
+      }
+    })
 
   }
 
-
+}
