@@ -6,6 +6,7 @@ import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit
 import { CarsdetailsComponent } from "../carsdetails/carsdetails.component";
 import { CarService } from '../../../services/car.service';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+import { LoginService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-carslist',
@@ -18,6 +19,7 @@ export class CarslistComponent {
 
   lista: Car[] = [];
   carEdit: Car = new Car();
+  loginService = inject(LoginService);
 
   modalService = inject(MdbModalService);
   @ViewChild("modalCarDetails") modalCarDetails!: TemplateRef<any>;

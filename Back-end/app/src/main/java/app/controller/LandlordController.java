@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class LandlordController {
         }
     }
 
+    @PreAuthorize("hasrole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Landlords landlord) {
         try {
@@ -62,6 +64,7 @@ public class LandlordController {
         }
     }
 
+    @PreAuthorize("hasrole('ADMIN')")
     @PutMapping("/updateAddress/{id}")
     public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody Address addressDetails) {
         try {

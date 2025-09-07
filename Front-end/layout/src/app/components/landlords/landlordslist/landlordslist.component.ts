@@ -5,6 +5,7 @@ import { Landlords } from '../../../models/landlord';
 import { LandlordService } from '../../../services/landlord.service';
 import { CommonModule } from '@angular/common';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+import { LoginService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-landlordslist',
@@ -19,6 +20,7 @@ export class LandlordslistComponent implements OnInit {
 
   private router = inject(Router);
   private landlordService = inject(LandlordService);
+  loginService = inject(LoginService);
 
   ngOnInit(): void {
     this.findAll();

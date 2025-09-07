@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -68,6 +69,7 @@ public class CarController {
         }
     }
 
+    @PreAuthorize("hasrole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Car car) {
         try {
@@ -78,6 +80,8 @@ public class CarController {
         }
     }
 
+
+    @PreAuthorize("hasrole('ADMIN')")
     @PutMapping("/update/{id}") // URL ajustada para o padrão
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Car car){
         try {
@@ -88,6 +92,7 @@ public class CarController {
         }
     }
 
+    @PreAuthorize("hasrole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         try {

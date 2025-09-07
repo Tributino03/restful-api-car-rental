@@ -1,11 +1,6 @@
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <!-- Container wrapper -->
   <div class="container-fluid">
-    <!-- Navbar brand -->
-    <a class="navbar-brand" routerLink="/">Sistema</a>
 
-    <!-- Toggle button -->
     <button
       class="navbar-toggler"
       type="button"
@@ -16,49 +11,31 @@
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Collapsible wrapper -->
-    <div
-      class="collapse navbar-collapse"
-      id="navbarSupportedContent"
-      mdbCollapse
-      #basicNavbar="mdbCollapse"
-    >
-      <!-- Left links -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" mdbCollapse #basicNavbar="mdbCollapse">
+      
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="/admin/cars">Carros</a>
+          <a class="nav-link" routerLink="/admin/cars" routerLinkActive="active">Carros</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/admin/brand">Marcas</a>
+          <a class="nav-link" routerLink="/admin/brand" routerLinkActive="active">Marcas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/admin/landlords">Locadores</a>
+          <a class="nav-link" routerLink="/admin/landlords" routerLinkActive="active">Locadores</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/admin/rentals">Aluguéis</a>
+          <a class="nav-link" routerLink="/admin/rentals" routerLinkActive="active">Aluguéis</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/login">Sair</a>
-        </li>
+        </ul>
+      
+      <div class="d-flex align-items-center">
+        <span class="navbar-text text-white me-3">
+          Olá, {{ usuario.username }}
+        </span>
         
-      </ul>
-      <!-- Left links -->
+        <a class="nav-link text-white" routerLink="/login">Sair</a>
+      </div>
 
-      <!-- Search form -->
-      <form class="d-flex input-group w-auto">
-        <input
-          type="search"
-          class="form-control"
-          placeholder="Type query"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-primary" type="button" mdbRipple rippleColor="dark">
-          Search
-        </button>
-      </form>
     </div>
-    <!-- Collapsible wrapper -->
-  </div>
-  <!-- Container wrapper -->
-</nav>
-<!-- Navbar -->
+    </div>
+  </nav>

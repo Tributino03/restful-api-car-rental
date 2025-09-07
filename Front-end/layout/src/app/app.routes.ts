@@ -9,11 +9,12 @@ import { LandlordslistComponent } from './components/landlords/landlordslist/lan
 import { LandlordsdetailsComponent } from './components/landlords/landlordsdetails/landlordsdetails.component';
 import { RentallistComponent } from './components/rentals/rentallist/rentallist.component';
 import { RentaldetailsComponent } from './components/rentals/rentaldetails/rentaldetails.component';
+import { loginGuard } from './auth/login.guard';
 
 export const routes: Routes = [
     {path : "", redirectTo: "login", pathMatch: "full"},
     {path: "login", component: LoginComponent},
-    {path: "admin", component: PrincipalComponent, children: [
+    {path: "admin", component: PrincipalComponent, canActivate: [loginGuard], children: [
         {path: "cars", component: CarslistComponent},
         {path: "cars/new", component: CarsdetailsComponent},
         {path: "cars/edit/:id", component: CarsdetailsComponent},

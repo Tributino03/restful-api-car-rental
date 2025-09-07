@@ -6,9 +6,11 @@
 
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Listagem de Locadores</h3>
+            @if (loginService.hasRole('ADMIN')){
             <button type="button" class="btn btn-primary btn-floating" mdbRipple (click)="new()">
               <i class="fas fa-plus"></i>
             </button>
+          }
           </div>
 
           <table class="table table-striped table-hover">
@@ -17,7 +19,10 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>CPF</th>
+                <th>Endereço</th>
+                @if (loginService.hasRole('ADMIN')){
                 <th class="text-end">Ações</th>
+                }
               </tr>
             </thead>
             <tbody>
@@ -26,10 +31,13 @@
                   <td>{{ landlord.id }}</td>
                   <td>{{ landlord.name }}</td>
                   <td>{{ landlord.cpf }}</td>
+                  <td>{{ landlord.address }}</td>
                   <td class="text-end">
+                    @if (loginService.hasRole('ADMIN')){
                     <div class="btn-group" role="group">
                       <button type="button" class="btn btn-warning btn-sm" mdbRipple (click)="edit(landlord)">Editar Endereço</button>
                     </div>
+                  }
                   </td>
                 </tr>
               }

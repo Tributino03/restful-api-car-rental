@@ -6,6 +6,7 @@ import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit
 import { BranddetailsComponent } from "../branddetails/branddetails.component";
 import { BrandService } from '../../../services/brand.service';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+import { LoginService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-brandlist',
@@ -18,6 +19,7 @@ export class BrandlistComponent {
 
   lista: Brand[] = [];
   brandEdit: Brand = new Brand();
+  loginService = inject(LoginService);
 
   modalService = inject(MdbModalService);
   @ViewChild("modalBrandDetails") modalBrandDetails!: TemplateRef<any>;
@@ -61,9 +63,8 @@ export class BrandlistComponent {
     this.modalRef = this.modalService.open(this.modalBrandDetails);
   }
 
-  // O retorno do modal (sucesso ou erro) aciona este método
   retornoDetails(brand: Brand) {
-    this.listAll(); // ATUALIZA A LISTA
-    this.modalRef.close(); // FECHA O MODAL
+    this.listAll(); 
+    this.modalRef.close(); 
   }
 }
