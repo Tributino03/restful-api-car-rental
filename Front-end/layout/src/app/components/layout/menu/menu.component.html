@@ -30,10 +30,10 @@
       
       <div class="d-flex align-items-center">
         <span class="navbar-text text-white me-3">
-          Olá, {{ usuario.username }}
+          Olá, {{ usuario?.username }}
         </span>
         
-        <a class="nav-link text-white" routerLink="/login">Sair</a>
+        <a class="nav-link text-white" style="cursor: pointer;" (click)="logout()">Sair</a>
       </div>
 
     </div>
