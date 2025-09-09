@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.BrandRequestDTO;
 import app.entity.Brand;
 import app.entity.Car;
 import app.repository.BrandRepository;
@@ -35,14 +36,19 @@ public class BrandService {
         return brandRepository.findByName(name);
     }
 
-    public Brand create(Brand brand) {
-        fipeApiService.validateBrandNameExists(brand.getName());
+    public Brand create(BrandRequestDTO brandDTO) {
+        fipeApiService.validateBrandNameExists(brandDTO.name());
 
-        if (!this.brandRepository.findByName(brand.getName()).isEmpty()) {
+        if (!this.brandRepository.findByName(brandDTO.name()).isEmpty()) {
             throw new IllegalArgumentException("Esta marca já está cadastrada no sistema.");
         }
 
-        return this.brandRepository.save(brand);
+        Brand newBrand = new Brand();
+        newBrand.setName(brandDTO.name());
+        newBrand.setFipeCode(brandDTO.fipeCode());
+        newBrand.setCnpj(brandDTO.cnpj());
+
+        return this.brandRepository.save(newBrand);
     }
 
     public void delete(Long id) {

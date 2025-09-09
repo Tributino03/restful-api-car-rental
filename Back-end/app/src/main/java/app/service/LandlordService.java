@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.LandlordRequestDTO;
 import app.entity.Address;
 import app.entity.Landlords;
 import app.repository.LandLordsRepository;
@@ -29,11 +30,18 @@ public class LandlordService {
         return landLordsRepository.findAll();
     }
 
-    public Landlords create(Landlords landlord) {
-        if (landLordsRepository.findByCpf(landlord.getCpf()).isPresent()) {
+    public Landlords create(LandlordRequestDTO landlordDTO) {
+        if (landLordsRepository.findByCpf(landlordDTO.cpf()).isPresent()) {
             throw new IllegalArgumentException("Já existe um locador cadastrado com este CPF.");
         }
-        return landLordsRepository.save(landlord);
+
+        Landlords newLandlord = new Landlords();
+        newLandlord.setName(landlordDTO.name());
+        newLandlord.setCpf(landlordDTO.cpf());
+        newLandlord.setDateOfBirth(landlordDTO.dateOfBirth());
+        newLandlord.setAddress(landlordDTO.address());
+
+        return landLordsRepository.save(newLandlord);
     }
 
     public Landlords updateAddress(Long landlordId, Address newAddressDetails) {

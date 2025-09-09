@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.dto.CarDTO;
+import app.dto.CarRequestDTO;
 import app.entity.Car;
 import app.service.CarService;
 import jakarta.persistence.EntityNotFoundException;
@@ -71,9 +72,9 @@ public class CarController {
 
     @PreAuthorize("hasrole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Car car) {
+    public ResponseEntity<?> create(@RequestBody CarRequestDTO carDTO) {
         try {
-            Car newCar = this.carService.create(car);
+            Car newCar = this.carService.create(carDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(newCar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -82,10 +83,10 @@ public class CarController {
 
 
     @PreAuthorize("hasrole('ADMIN')")
-    @PutMapping("/update/{id}") // URL ajustada para o padrão
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Car car){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CarRequestDTO carDTO){
         try {
-            Car updatedCar = this.carService.update(id, car);
+            Car updatedCar = this.carService.update(id, carDTO);
             return ResponseEntity.ok(updatedCar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -99,7 +100,7 @@ public class CarController {
             this.carService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null); // Corpo vazio para erros
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

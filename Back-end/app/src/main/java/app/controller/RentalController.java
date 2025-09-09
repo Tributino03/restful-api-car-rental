@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.RentalRequestDTO;
 import app.dto.RentalResponseDTO;
 import app.entity.Rental;
 import app.service.RentalService;
@@ -56,13 +57,11 @@ public class RentalController {
 
     @PreAuthorize("hasrole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Rental rental) {
+    public ResponseEntity<?> create(@RequestBody RentalRequestDTO rentalDTO) {
         try {
-            Rental newRental = rentalService.create(rental);
+            Rental newRental = rentalService.create(rentalDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(newRental);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

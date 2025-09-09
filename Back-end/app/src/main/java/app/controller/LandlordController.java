@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.LandlordRequestDTO;
 import app.entity.Address;
 import app.entity.Car;
 import app.entity.Landlords;
@@ -55,11 +56,11 @@ public class LandlordController {
 
     @PreAuthorize("hasrole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Landlords landlord) {
+    public ResponseEntity<?> create(@RequestBody LandlordRequestDTO landlordDTO) { // <-- Recebe DTO
         try {
-            Landlords newLandlord = this.landlordService.create(landlord);
+            Landlords newLandlord = this.landlordService.create(landlordDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(newLandlord);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

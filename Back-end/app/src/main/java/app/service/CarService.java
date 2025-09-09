@@ -2,6 +2,7 @@ package app.service;
 
 import app.dto.BrandDTO;
 import app.dto.CarDTO;
+import app.dto.CarRequestDTO;
 import app.dto.RentalDTO;
 import app.entity.Brand;
 import app.entity.Car;
@@ -49,32 +50,31 @@ public class CarService {
         return this.carRepository.findAboveYear(year);
     }
 
-    public Car create(Car car) {
-        if (car.getBrand() == null || car.getBrand().getId() == null || car.getBrand().getId() == 0) {
-            throw new IllegalArgumentException("A marca do carro precisa ser selecionada.");
-        }
+    public Car create(CarRequestDTO carDTO) {
+        Brand brandFromDb = brandRepository.findById(carDTO.brandId())
+                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brandId() + " não foi encontrada."));
 
-        Brand brandFromDb = brandRepository.findById(car.getBrand().getId())
-                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + car.getBrand().getId() + " não foi encontrada no banco."));
+        Car newCar = new Car();
+        newCar.setName(carDTO.name());
+        newCar.setYear(carDTO.year());
+        newCar.setVehicleValue(carDTO.vehicleValue());
+        newCar.setBrand(brandFromDb);
 
-        car.setBrand(brandFromDb);
-        fipeApiService.validateModelBelongsToBrand(car, brandFromDb);
-
-        return this.carRepository.save(car);
+        fipeApiService.validateModelBelongsToBrand(newCar, brandFromDb);
+        return this.carRepository.save(newCar);
     }
 
-    public Car update(Long id, Car carDetails) {
+    public Car update(Long id, CarRequestDTO carDTO) {
         Car carFromDb = this.findById(id);
+        Brand brandFromDb = brandRepository.findById(carDTO.brandId())
+                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brandId() + " não foi encontrada."));
 
-        Brand brandFromDb = brandRepository.findById(carDetails.getBrand().getId())
-                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDetails.getBrand().getId() + " não foi encontrada no banco."));
-
-        fipeApiService.validateModelBelongsToBrand(carDetails, brandFromDb);
-
-        carFromDb.setName(carDetails.getName());
-        carFromDb.setYear(carDetails.getYear());
-        carFromDb.setVehicleValue(carDetails.getVehicleValue());
+        carFromDb.setName(carDTO.name());
+        carFromDb.setYear(carDTO.year());
+        carFromDb.setVehicleValue(carDTO.vehicleValue());
         carFromDb.setBrand(brandFromDb);
+
+        fipeApiService.validateModelBelongsToBrand(carFromDb, brandFromDb);
         return this.carRepository.save(carFromDb);
     }
 

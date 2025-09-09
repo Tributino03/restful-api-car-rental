@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.BrandRequestDTO;
 import app.entity.Brand;
 import app.service.BrandService;
 import jakarta.persistence.EntityNotFoundException;
@@ -45,11 +46,11 @@ public class BrandController {
 
     @PreAuthorize("hasrole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Brand brand) {
+    public ResponseEntity<?> create(@RequestBody BrandRequestDTO brandDTO) {
         try {
-            Brand newBrand = this.brandService.create(brand);
+            Brand newBrand = this.brandService.create(brandDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(newBrand);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

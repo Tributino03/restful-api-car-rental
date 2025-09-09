@@ -2,6 +2,7 @@ package app.service;
 
 import app.dto.CarSimpleDTO;
 import app.dto.LandlordSimpleDTO;
+import app.dto.RentalRequestDTO;
 import app.dto.RentalResponseDTO;
 import app.entity.Car;
 import app.entity.Landlords;
@@ -51,25 +52,25 @@ public class RentalService {
         return rentalRepository.findByLandlord_Id(landlordId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public Rental create(Rental rentalRequest) {
-        Car car = carRepository.findById(rentalRequest.getCar().getId())
+    public Rental create(RentalRequestDTO rentalDTO) {
+        Car car = carRepository.findById(rentalDTO.carId())
                 .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado."));
 
-        Landlords landlord = landlordsRepository.findById(rentalRequest.getLandlord().getId())
+        Landlords landlord = landlordsRepository.findById(rentalDTO.landlordId())
                 .orElseThrow(() -> new EntityNotFoundException("Locador não encontrado."));
 
-        List<Rental> overlappingRentals = rentalRepository.findOverlappingRentals(car.getId(), rentalRequest.getStartDate(), rentalRequest.getReturnDate());
+        List<Rental> overlappingRentals = rentalRepository.findOverlappingRentals(car.getId(), rentalDTO.startDate(), rentalDTO.returnDate());
         if (!overlappingRentals.isEmpty()) {
             throw new IllegalStateException("Este carro já está alugado para o período solicitado.");
         }
 
-        double totalValue = calculateTotalValue(car, rentalRequest.getStartDate(), rentalRequest.getReturnDate());
+        double totalValue = calculateTotalValue(car, rentalDTO.startDate(), rentalDTO.returnDate());
 
         Rental newRental = new Rental();
         newRental.setCar(car);
         newRental.setLandlord(landlord);
-        newRental.setStartDate(rentalRequest.getStartDate());
-        newRental.setReturnDate(rentalRequest.getReturnDate());
+        newRental.setStartDate(rentalDTO.startDate());
+        newRental.setReturnDate(rentalDTO.returnDate());
         newRental.setTotalValue(totalValue);
         newRental.setStatus("ATIVO");
 
