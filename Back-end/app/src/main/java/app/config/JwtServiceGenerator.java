@@ -11,7 +11,7 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import app.auth.Usuario;
+import app.auth.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,13 +22,11 @@ import io.jsonwebtoken.security.Keys;
 public class JwtServiceGenerator {  
 
 	///////////////////////////////////////////////////////
-	//Parâmetros para geração do token
 	public static final String SECRET_KEY = "UMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUI";
 	public static final SignatureAlgorithm ALGORITMO_ASSINATURA = SignatureAlgorithm.HS256;
 	public static final int HORAS_EXPIRACAO_TOKEN = 1;
 
 	public Map<String, Object> gerarPayload(Usuario usuario){
-		//AQUI VOCÊ PODE COLOCAR O QUE MAIS VAI COMPOR O PAYLOAD DO TOKEN
 		
 		Map<String, Object> payloadData = new HashMap<>();
 		payloadData.put("username", usuario.getUsername());

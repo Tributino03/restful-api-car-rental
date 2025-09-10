@@ -1,7 +1,5 @@
-
-export class Usuario {
-  id!: number;
-  username!: string;
-  password!: string;
-  role!: string;
+export interface Usuario {
+    sub: string;     
+    role: string;     
+    id: string;        
 }

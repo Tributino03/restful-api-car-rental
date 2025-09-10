@@ -54,7 +54,7 @@ public class LandlordController {
         }
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody LandlordRequestDTO landlordDTO) { // <-- Recebe DTO
         try {
@@ -65,7 +65,7 @@ public class LandlordController {
         }
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateAddress/{id}")
     public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody Address addressDetails) {
         try {

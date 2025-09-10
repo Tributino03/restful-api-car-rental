@@ -1,7 +1,8 @@
-package app.auth;
+package app.auth.repository;
 
 import java.util.Optional;
 
+import app.auth.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

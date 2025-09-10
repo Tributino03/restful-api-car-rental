@@ -29,9 +29,10 @@
         </ul>
       
       <div class="d-flex align-items-center">
-        <span class="navbar-text text-white me-3">
-          Olá, {{ usuario?.username }}
-        </span>
+        @if(usuario) {
+          <span class="navbar-text text-white me-3">
+            Olá, {{ usuario.sub }} </span>
+        }
         
         <a class="nav-link text-white" style="cursor: pointer;" (click)="logout()">Sair</a>
       </div>

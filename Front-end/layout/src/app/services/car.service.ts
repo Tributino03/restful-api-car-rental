@@ -1,5 +1,5 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Car } from '../models/car';
 
@@ -7,27 +7,23 @@ import { Car } from '../models/car';
   providedIn: 'root'
 })
 export class CarService {
+  private apiUrl = 'http://localhost:8080/api/car';
 
-  private http = inject(HttpClient);
-  private API = "http://localhost:8080/api/car";
+  constructor(private http: HttpClient) {}
 
   listAll(): Observable<Car[]> {
-    return this.http.get<Car[]>(`${this.API}/findAll`);
+    return this.http.get<Car[]>(`${this.apiUrl}/findAll`);
   }
 
-  findById(id: number): Observable<Car> {
-    return this.http.get<Car>(`${this.API}/findById/${id}`);
-  }
-
-  create(car: Car): Observable<Car> {
-    return this.http.post<Car>(`${this.API}/create`, car);
+  create(carRequest: any): Observable<Car> {
+    return this.http.post<Car>(`${this.apiUrl}/create`, carRequest);
   }
 
   update(car: Car): Observable<Car> {
-    return this.http.put<Car>(`${this.API}/update/${car.id}`, car);
-  }
+  return this.http.put<Car>(`${this.apiUrl}/update/${car.id}`, car);
+}
 
-  delete(id: number): Observable<string> {
-    return this.http.delete(`${this.API}/delete/${id}`, { responseType: 'text' });
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 }

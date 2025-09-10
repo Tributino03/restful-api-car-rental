@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { jwtDecode, JwtPayload } from "jwt-decode";
-import { Login } from './login';
-import { Usuario } from './usuario';
+import { jwtDecode } from "jwt-decode";
+import { Login } from '../models/login'; 
+import { Usuario } from '../auth/usuario'; 
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,8 @@ export class LoginService {
   http = inject(HttpClient);
   API = "http://localhost:8080/api/login";
 
-
-  constructor() { }
-
-
   logar(login: Login): Observable<string> {
-    return this.http.post<string>(this.API, login, {responseType: 'text' as 'json'});
+    return this.http.post<string>(this.API, login, { responseType: 'text' as 'json' });
   }
 
   addToken(token: string) {
@@ -33,25 +29,30 @@ export class LoginService {
     return localStorage.getItem('token');
   }
 
-  jwtDecode() {
-    let token = this.getToken();
+  isLoggedIn(): boolean {
+    return this.getToken() != null;
+  }
+
+  jwtDecode(): Usuario | null {
+    const token = this.getToken();
     if (token) {
-      return jwtDecode<JwtPayload>(token);
+      try {
+        return jwtDecode<Usuario>(token);
+      } catch (e) {
+        console.error("Token inválido ou expirado", e);
+        this.removerToken(); 
+        return null;
+      }
     }
-    return "";
+    return null;
   }
 
-  hasRole(role: string) {
-    let user = this.jwtDecode() as Usuario;
-    if (user.role == role)
-      return true;
-    else
-      return false;
-  }
-  
-  getUsuarioLogado() {
-    return this.jwtDecode() as Usuario;
+  hasRole(role: string): boolean {
+    const user = this.jwtDecode();
+    return user != null && user.role === role;
   }
 
-
+  getUsuarioLogado(): Usuario | null {
+    return this.jwtDecode();
+  }
 }

@@ -31,7 +31,13 @@
                   <td>{{ landlord.id }}</td>
                   <td>{{ landlord.name }}</td>
                   <td>{{ landlord.cpf }}</td>
-                  <td>{{ landlord.address }}</td>
+                  <td>
+                    @if (landlord.address) {
+                       {{ landlord.address.neighborhood}}, {{ landlord.address.street }}, {{ landlord.address.number }} - {{ landlord.address.city }}
+                    } @else {
+                      N/A
+                    }
+                  </td>
                   <td class="text-end">
                     @if (loginService.hasRole('ADMIN')){
                     <div class="btn-group" role="group">

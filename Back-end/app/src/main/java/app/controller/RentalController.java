@@ -55,7 +55,7 @@ public class RentalController {
         }
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody RentalRequestDTO rentalDTO) {
         try {

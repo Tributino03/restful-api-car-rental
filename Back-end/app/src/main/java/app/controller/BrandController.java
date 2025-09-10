@@ -44,7 +44,7 @@ public class BrandController {
         return ResponseEntity.ok(this.brandService.findByName(name));
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody BrandRequestDTO brandDTO) {
         try {
@@ -55,7 +55,7 @@ public class BrandController {
         }
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {

@@ -51,8 +51,13 @@ public class CarService {
     }
 
     public Car create(CarRequestDTO carDTO) {
-        Brand brandFromDb = brandRepository.findById(carDTO.brandId())
-                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brandId() + " não foi encontrada."));
+        // Validação de entrada: Garante que a marca não é nula
+        if (carDTO.brand() == null || carDTO.brand().getId() == null) {
+            throw new IllegalArgumentException("A marca do carro precisa ser selecionada.");
+        }
+
+        Brand brandFromDb = brandRepository.findById(carDTO.brand().getId())
+                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brand().getId() + " não foi encontrada."));
 
         Car newCar = new Car();
         newCar.setName(carDTO.name());
@@ -66,8 +71,13 @@ public class CarService {
 
     public Car update(Long id, CarRequestDTO carDTO) {
         Car carFromDb = this.findById(id);
-        Brand brandFromDb = brandRepository.findById(carDTO.brandId())
-                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brandId() + " não foi encontrada."));
+
+        if (carDTO.brand() == null || carDTO.brand().getId() == null) {
+            throw new IllegalArgumentException("A marca do carro precisa ser selecionada.");
+        }
+
+        Brand brandFromDb = brandRepository.findById(carDTO.brand().getId())
+                .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brand().getId() + " não foi encontrada."));
 
         carFromDb.setName(carDTO.name());
         carFromDb.setYear(carDTO.year());

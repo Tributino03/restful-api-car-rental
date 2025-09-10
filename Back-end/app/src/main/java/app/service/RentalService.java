@@ -53,17 +53,24 @@ public class RentalService {
     }
 
     public Rental create(RentalRequestDTO rentalDTO) {
-        Car car = carRepository.findById(rentalDTO.carId())
+        if (rentalDTO.car() == null || rentalDTO.car().getId() == null) {
+            throw new IllegalArgumentException("O carro precisa ser informado.");
+        }
+        if (rentalDTO.landlord() == null || rentalDTO.landlord().getId() == null) {
+            throw new IllegalArgumentException("O locador precisa ser informado.");
+        }
+
+        Car car = carRepository.findById(rentalDTO.car().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado."));
 
-        Landlords landlord = landlordsRepository.findById(rentalDTO.landlordId())
+        Landlords landlord = landlordsRepository.findById(rentalDTO.landlord().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Locador não encontrado."));
 
         List<Rental> overlappingRentals = rentalRepository.findOverlappingRentals(car.getId(), rentalDTO.startDate(), rentalDTO.returnDate());
         if (!overlappingRentals.isEmpty()) {
             throw new IllegalStateException("Este carro já está alugado para o período solicitado.");
         }
-
+        
         double totalValue = calculateTotalValue(car, rentalDTO.startDate(), rentalDTO.returnDate());
 
         Rental newRental = new Rental();
@@ -82,7 +89,9 @@ public class RentalService {
         double totalValue = 0;
 
         long totalDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), endDate.toLocalDate());
-        if (totalDays == 0) totalDays = 1;
+        if (totalDays < 1) {
+            totalDays = 1;
+        }
 
         for (long i = 0; i < totalDays; i++) {
             LocalDateTime currentDay = startDate.plusDays(i);
@@ -99,7 +108,6 @@ public class RentalService {
 
     private RentalResponseDTO convertToDTO(Rental rental) {
         CarSimpleDTO carDTO = new CarSimpleDTO(rental.getCar().getId(), rental.getCar().getName());
-
         LandlordSimpleDTO landlordDTO = new LandlordSimpleDTO(rental.getLandlord().getId(), rental.getLandlord().getName());
 
         return new RentalResponseDTO(
@@ -112,4 +120,5 @@ public class RentalService {
                 landlordDTO
         );
     }
+
 }

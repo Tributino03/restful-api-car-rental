@@ -1,6 +1,9 @@
 //AuthenticationService.java
-package app.auth;
+package app.auth.service;
 
+import app.auth.model.Login;
+import app.auth.model.Usuario;
+import app.auth.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

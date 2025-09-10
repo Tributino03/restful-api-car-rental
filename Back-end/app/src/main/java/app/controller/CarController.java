@@ -70,7 +70,7 @@ public class CarController {
         }
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody CarRequestDTO carDTO) {
         try {
@@ -81,8 +81,7 @@ public class CarController {
         }
     }
 
-
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CarRequestDTO carDTO){
         try {
@@ -93,7 +92,7 @@ public class CarController {
         }
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         try {

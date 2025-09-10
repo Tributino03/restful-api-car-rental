@@ -1,4 +1,4 @@
-package app.auth;
+package app.auth.model;
 
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class Usuario implements UserDetails{
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(this.role));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role));
 		return authorities;
 	}
 
