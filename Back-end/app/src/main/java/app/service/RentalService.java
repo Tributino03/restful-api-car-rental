@@ -11,7 +11,9 @@ import app.repository.CarRepository;
 import app.repository.LandLordsRepository;
 import app.repository.RentalRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -106,6 +108,23 @@ public class RentalService {
         return totalValue;
     }
 
+    @Scheduled(cron = "0 0 * * * *")
+    @Transactional
+    public void updateExpiredRentalsStatus() {
+        System.out.println("Executando tarefa agendada: Verificando aluguéis expirados...");
+
+        List<Rental> activeRentals = rentalRepository.findByStatus("ATIVO");
+
+        for (Rental rental : activeRentals) {
+            if (rental.getReturnDate().isBefore(LocalDateTime.now())) {
+                System.out.println("Aluguel ID " + rental.getId() + " expirou. Atualizando status para FINALIZADO.");
+                rental.setStatus("FINALIZADO");
+                rentalRepository.save(rental);
+            }
+        }
+        System.out.println("Tarefa de verificação de aluguéis concluída.");
+    }
+
     private RentalResponseDTO convertToDTO(Rental rental) {
         CarSimpleDTO carDTO = new CarSimpleDTO(rental.getCar().getId(), rental.getCar().getName());
         LandlordSimpleDTO landlordDTO = new LandlordSimpleDTO(rental.getLandlord().getId(), rental.getLandlord().getName());
@@ -120,5 +139,7 @@ public class RentalService {
                 landlordDTO
         );
     }
+
+
 
 }
