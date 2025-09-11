@@ -9,29 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LandlordService {
 
     @Autowired
-    private LandLordsRepository landLordsRepository;
+    private LandLordsRepository landlordsRepository;
 
     public Landlords findById(Long id) {
-        return landLordsRepository.findById(id)
+        return landlordsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Locador não encontrado com o id: " + id));
     }
 
     public Landlords findByCpf(String cpf) {
-        return landLordsRepository.findByCpf(cpf)
+        return landlordsRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum locador encontrado com o CPF: " + cpf));
     }
 
     public List<Landlords> findAll() {
-        return landLordsRepository.findAll();
+        return landlordsRepository.findAll();
     }
 
     public Landlords create(LandlordRequestDTO landlordDTO) {
-        if (landLordsRepository.findByCpf(landlordDTO.cpf()).isPresent()) {
+        if (landlordsRepository.findByCpf(landlordDTO.cpf()).isPresent()) {
             throw new IllegalArgumentException("Já existe um locador cadastrado com este CPF.");
         }
 
@@ -41,7 +42,7 @@ public class LandlordService {
         newLandlord.setDateOfBirth(landlordDTO.dateOfBirth());
         newLandlord.setAddress(landlordDTO.address());
 
-        return landLordsRepository.save(newLandlord);
+        return landlordsRepository.save(newLandlord);
     }
 
     public Landlords updateAddress(Long landlordId, Address newAddressDetails) {
@@ -58,7 +59,6 @@ public class LandlordService {
         landlordFromDb.getAddress().setCity(newAddressDetails.getCity());
         landlordFromDb.getAddress().setState(newAddressDetails.getState());
 
-        return landLordsRepository.save(landlordFromDb);
+        return landlordsRepository.save(landlordFromDb);
     }
-
 }

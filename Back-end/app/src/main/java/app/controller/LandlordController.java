@@ -2,10 +2,8 @@ package app.controller;
 
 import app.dto.LandlordRequestDTO;
 import app.entity.Address;
-import app.entity.Car;
 import app.entity.Landlords;
 import app.service.LandlordService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,64 +17,33 @@ import java.util.List;
 public class LandlordController {
 
     @Autowired
-    LandlordService landlordService;
+    private LandlordService landlordService;
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id){
-        try{
-            Landlords landlords = this.landlordService.findById(id);
-            return ResponseEntity.ok(landlords);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Landlords> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(landlordService.findById(id));
     }
 
     @GetMapping("/findByCpf")
-    public ResponseEntity<?> findByCpf(@RequestParam String cpf) {
-        try {
-            Landlords landlord = this.landlordService.findByCpf(cpf);
-            return ResponseEntity.ok(landlord);
-        } catch (jakarta.persistence.EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao buscar locador por CPF: " + e.getMessage());
-        }
-
+    public ResponseEntity<Landlords> findByCpf(@RequestParam String cpf) {
+        return ResponseEntity.ok(landlordService.findByCpf(cpf));
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAll() {
-        try {
-            List<Landlords> landlords = this.landlordService.findAll();
-            return ResponseEntity.ok(landlords);
-        } catch (jakarta.persistence.EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<List<Landlords>> findAll() {
+        return ResponseEntity.ok(landlordService.findAll());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody LandlordRequestDTO landlordDTO) { // <-- Recebe DTO
-        try {
-            Landlords newLandlord = this.landlordService.create(landlordDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newLandlord);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Landlords> create(@RequestBody LandlordRequestDTO landlordDTO) {
+        Landlords newLandlord = landlordService.create(landlordDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newLandlord);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateAddress/{id}")
-    public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody Address addressDetails) {
-        try {
-            Landlords updatedLandlord = this.landlordService.updateAddress(id, addressDetails);
-            return ResponseEntity.ok(updatedLandlord);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao atualizar o endereço: " + e.getMessage());
-        }
+    public ResponseEntity<Landlords> updateAddress(@PathVariable Long id, @RequestBody Address addressDetails) {
+        return ResponseEntity.ok(landlordService.updateAddress(id, addressDetails));
     }
-
-
 }

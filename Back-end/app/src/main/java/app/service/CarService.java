@@ -51,7 +51,6 @@ public class CarService {
     }
 
     public Car create(CarRequestDTO carDTO) {
-        // Validação de entrada: Garante que a marca não é nula
         if (carDTO.brand() == null || carDTO.brand().getId() == null) {
             throw new IllegalArgumentException("A marca do carro precisa ser selecionada.");
         }
@@ -88,10 +87,17 @@ public class CarService {
         return this.carRepository.save(carFromDb);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         Car car = this.findById(id);
+
+        if (car.getRentals() != null && !car.getRentals().isEmpty()) {
+            throw new IllegalStateException("Este carro não pode ser excluído, pois existem "
+                    + car.getRentals().size() + " aluguel(is) associados a ele.");
+        }
+
         this.carRepository.delete(car);
     }
+
 
     private CarDTO convertToDTO(Car car) {
         BrandDTO brandDTO = null;

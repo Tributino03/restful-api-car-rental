@@ -4,7 +4,6 @@ import app.dto.RentalRequestDTO;
 import app.dto.RentalResponseDTO;
 import app.entity.Rental;
 import app.service.RentalService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +20,8 @@ public class RentalController {
     private RentalService rentalService;
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        try {
-            Rental rental = rentalService.findById(id);
-            return ResponseEntity.ok(rental);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<Rental> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(rentalService.findById(id));
     }
 
     @GetMapping("/findAll")
@@ -36,33 +30,19 @@ public class RentalController {
     }
 
     @GetMapping("/car/{carId}")
-    public ResponseEntity<?> findByCarId(@PathVariable Long carId) {
-        try {
-            List<RentalResponseDTO> rentals = rentalService.findByCarId(carId);
-            return ResponseEntity.ok(rentals);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<List<RentalResponseDTO>> findByCarId(@PathVariable Long carId) {
+        return ResponseEntity.ok(rentalService.findByCarId(carId));
     }
 
     @GetMapping("/landlord/{landlordId}")
-    public ResponseEntity<?> findByLandlordId(@PathVariable Long landlordId) {
-        try {
-            List<RentalResponseDTO> rentals = rentalService.findByLandlordId(landlordId);
-            return ResponseEntity.ok(rentals);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<List<RentalResponseDTO>> findByLandlordId(@PathVariable Long landlordId) {
+        return ResponseEntity.ok(rentalService.findByLandlordId(landlordId));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody RentalRequestDTO rentalDTO) {
-        try {
-            Rental newRental = rentalService.create(rentalDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newRental);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Rental> create(@RequestBody RentalRequestDTO rentalDTO) {
+        Rental newRental = rentalService.create(rentalDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newRental);
     }
 }

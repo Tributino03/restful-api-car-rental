@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RestController
 @RequestMapping("/api/address")
 public class AddressController {
-
     private final WebClient webClient;
 
     public AddressController(WebClient.Builder webClientBuilder) {
@@ -19,21 +18,15 @@ public class AddressController {
     public ResponseEntity<ViaCepDTO> findByCep(@PathVariable String cep) {
         try {
             String cleanCep = cep.replaceAll("\\D", "");
+            if (cleanCep.length() == 7) { cleanCep = "0" + cleanCep; }
+            if (cleanCep.length() != 8) { return ResponseEntity.badRequest().build(); }
 
-            if (cleanCep.length() == 7) {
-                cleanCep = "0" + cleanCep;
+            ViaCepDTO address = this.webClient.get().uri("/{cep}/json/", cleanCep)
+                    .retrieve().bodyToMono(ViaCepDTO.class).block();
+
+            if (address == null || address.cep() == null) {
+                return ResponseEntity.notFound().build();
             }
-
-            if (cleanCep.length() != 8) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            ViaCepDTO address = this.webClient.get()
-                    .uri("/{cep}/json/", cleanCep)
-                    .retrieve()
-                    .bodyToMono(ViaCepDTO.class)
-                    .block();
-
             return ResponseEntity.ok(address);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

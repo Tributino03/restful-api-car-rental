@@ -70,7 +70,7 @@ public class RentalService {
         if (!overlappingRentals.isEmpty()) {
             throw new IllegalStateException("Este carro já está alugado para o período solicitado.");
         }
-        
+
         double totalValue = calculateTotalValue(car, rentalDTO.startDate(), rentalDTO.returnDate());
 
         Rental newRental = new Rental();

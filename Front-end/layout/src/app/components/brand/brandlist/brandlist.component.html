@@ -19,6 +19,7 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Código FIPE</th>
+                <th>CNPJ</th>
                 @if (loginService.hasRole('ADMIN')){
                 <th class="text-end">Ações</th>
                 }
@@ -30,6 +31,7 @@
                   <td>{{ brand.id }}</td>
                   <td>{{ brand.name }}</td>
                   <td>{{ brand.fipeCode }}</td>
+                  <td>{{ brand.cnpj }}</td>
                   @if (loginService.hasRole('ADMIN')){
                   <td class="text-end">
                     <div class="btn-group" role="group">
