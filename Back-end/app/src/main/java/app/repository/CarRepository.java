@@ -15,6 +15,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     public List<Car> findByBrand(Brand brand);
 
-    @Query("FROM Car c WHERE c.year > :year")
-    public List<Car> findAboveYear (int year);
+    @Query("FROM Car c WHERE c.modelYear > :modelYear")
+    public List<Car> findAboveYear (int modelYear);
 }

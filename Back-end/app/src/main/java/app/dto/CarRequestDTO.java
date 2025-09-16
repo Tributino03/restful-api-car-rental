@@ -4,7 +4,7 @@ import app.entity.Brand;
 
 public record CarRequestDTO(
         String name,
-        int year,
+        int modelYear,
         Double vehicleValue,
         Brand brand
 ) {}

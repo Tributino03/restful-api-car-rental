@@ -40,8 +40,8 @@ public class CarController {
     }
 
     @GetMapping("/findAboveYear")
-    public ResponseEntity<List<Car>> findAboveYear(@RequestParam int year) {
-        return ResponseEntity.ok(carService.findAboveYear(year));
+    public ResponseEntity<List<Car>> findAboveYear(@RequestParam int modelYear) {
+        return ResponseEntity.ok(carService.findAboveYear(modelYear));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

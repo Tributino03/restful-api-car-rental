@@ -46,6 +46,7 @@ public class CarService {
         brand.setId(idBrand);
         return this.carRepository.findByBrand(brand);
     }
+
     public List<Car> findAboveYear(int year){
         return this.carRepository.findAboveYear(year);
     }
@@ -60,7 +61,7 @@ public class CarService {
 
         Car newCar = new Car();
         newCar.setName(carDTO.name());
-        newCar.setYear(carDTO.year());
+        newCar.setModelYear(carDTO.modelYear());
         newCar.setVehicleValue(carDTO.vehicleValue());
         newCar.setBrand(brandFromDb);
 
@@ -79,7 +80,7 @@ public class CarService {
                 .orElseThrow(() -> new EntityNotFoundException("A marca com o ID " + carDTO.brand().getId() + " não foi encontrada."));
 
         carFromDb.setName(carDTO.name());
-        carFromDb.setYear(carDTO.year());
+        carFromDb.setModelYear(carDTO.modelYear());
         carFromDb.setVehicleValue(carDTO.vehicleValue());
         carFromDb.setBrand(brandFromDb);
 
@@ -109,6 +110,6 @@ public class CarService {
                 .map(rental -> new RentalDTO(rental.getId(), rental.getStartDate(), rental.getReturnDate(), rental.getStatus()))
                 .collect(Collectors.toList()) : Collections.emptyList();
 
-        return new CarDTO(car.getId(), car.getName(), car.getYear(), brandDTO, rentalDTOs);
+        return new CarDTO(car.getId(), car.getName(), car.getModelYear(), brandDTO, rentalDTOs);
     }
 }
