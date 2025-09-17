@@ -14,6 +14,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 class LandLordsRepositoryTest {
 
@@ -41,7 +43,17 @@ class LandLordsRepositoryTest {
     @Test
     @DisplayName("Deve retorna o locador com o cpf correspondente")
     void findByCpfCase1(){
-        Optional<Landlords> result = 
+        Optional<Landlords> result = landLordsRepository.findByCpf("864.610.440-00");
+
+        assertThat(result).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Deve retorna um optional vazio")
+    void findByCpfCase2(){
+        Optional<Landlords> result = landLordsRepository.findByCpf("864.610.440-99");
+
+        assertThat(result).isEmpty();
     }
 
 }
