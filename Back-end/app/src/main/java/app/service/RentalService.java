@@ -54,6 +54,12 @@ public class RentalService {
         return rentalRepository.findByLandlord_Id(landlordId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    public List<RentalResponseDTO> findByStatus(String status) {
+        return rentalRepository.findByStatus(status).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public Rental create(RentalRequestDTO rentalDTO) {
         if (rentalDTO.car() == null || rentalDTO.car().getId() == null) {
             throw new IllegalArgumentException("O carro precisa ser informado.");
@@ -108,7 +114,7 @@ public class RentalService {
         return totalValue;
     }
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(fixedRate = 10000)
     @Transactional
     public void updateExpiredRentalsStatus() {
         System.out.println("Executando tarefa agendada: Verificando aluguéis expirados...");
