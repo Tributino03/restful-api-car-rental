@@ -20,7 +20,7 @@ public class FipeApiService {
         List<FipeBrandDTO> brandsFromApi = webClient.get()
                 .uri("/carros/marcas")
                 .retrieve()
-                .bodyToFlux(FipeBrandDTO.class) // Usa o DTO corrigido
+                .bodyToFlux(FipeBrandDTO.class)
                 .collectList()
                 .block();
 
