@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,11 +22,14 @@ class RentalRepositoryTest {
     private RentalRepository rentalRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private TestEntityManager entityManager;
 
     private Car carForTest;
+
     private Car carForTest2;
+
     private Landlords landlordForTest;
+
     private Landlords landlordForTest2;
 
     @BeforeEach
@@ -145,7 +149,7 @@ class RentalRepositoryTest {
     @DisplayName("Deve retornar uma lista vazia para um status que não existe em nenhum aluguel")
     void findByStatus_WhenStatusDoesNotExist_ShouldReturnEmptyList() {
         List<Rental> result = rentalRepository.findByStatus("FINALIZADO");
-        
+
         assertThat(result).isEmpty();
     }
 
