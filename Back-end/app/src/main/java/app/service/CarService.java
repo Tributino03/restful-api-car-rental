@@ -41,6 +41,7 @@ public class CarService {
     public List<Car> findByName(String name){
         return this.carRepository.findByName(name);
     }
+
     public List<Car> findByBrand(Long idBrand){
         Brand brand = new Brand();
         brand.setId(idBrand);
