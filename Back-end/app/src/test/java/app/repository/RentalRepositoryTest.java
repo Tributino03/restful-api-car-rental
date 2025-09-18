@@ -147,7 +147,7 @@ class RentalRepositoryTest {
 
     @Test
     @DisplayName("Deve retornar uma lista vazia para um status que não existe em nenhum aluguel")
-    void findByStatus_WhenStatusDoesNotExist_ShouldReturnEmptyList() {
+    void findByStatusCase2() {
         List<Rental> result = rentalRepository.findByStatus("FINALIZADO");
 
         assertThat(result).isEmpty();
