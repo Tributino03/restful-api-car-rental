@@ -13,8 +13,12 @@ import java.util.List;
 @Service
 public class FipeApiService {
 
-    @Autowired
     private WebClient webClient;
+
+    @Autowired
+    public FipeApiService(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     public void validateBrandNameExists(String brandName) {
         List<FipeBrandDTO> brandsFromApi = webClient.get()
