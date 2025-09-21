@@ -281,7 +281,7 @@ class RentalServiceTest {
 
         RentalRequestDTO rentalRequestDTO = new RentalRequestDTO(car, landlords, startDate, endDate);
 
-        when(carRepository.findById(1L)).thenReturn(Optional.of(car)); 
+        when(carRepository.findById(1L)).thenReturn(Optional.of(car));
         when(landlordsRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> rentalService.create(rentalRequestDTO));
