@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleGeneric(Exception ex) {
-		ex.printStackTrace(); // log no servidor
+		ex.printStackTrace();
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body("Ocorreu um erro inesperado. Contate o suporte.");
 	}
