@@ -173,7 +173,7 @@ class BrandControllerTest {
     @DisplayName("delete deve retornar 409 para conflito (marca com carros)")
     @WithMockUser(roles = "ADMIN")
     void deleteCase2() throws Exception {
-        doThrow(new IllegalStateException("Esta marca não pode ser excluída"))
+        doThrow(new IllegalStateException("Esta marca não pode ser excluída pois a carros associados a ela"))
                 .when(brandService).delete(1L);
 
         mockMvc.perform(delete("/api/brand/delete/1"))
