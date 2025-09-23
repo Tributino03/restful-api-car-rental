@@ -1,18 +1,12 @@
 package app.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import app.dto.BrandRequestDTO;
 import app.dto.CarRequestDTO;
 import app.entity.Brand;
 import app.entity.Car;
-import app.service.BrandService;
 import app.service.CarService;
-import app.service.FipeApiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,7 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class CarControllerTest {
+class  CarControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -354,7 +349,7 @@ class CarControllerTest {
                 .when(carService).delete(1L);
 
         mockMvc.perform(delete("/api/car/delete/1"))
-                .andExpect(status().isConflict()); 
+                .andExpect(status().isConflict());
     }
 
 }
