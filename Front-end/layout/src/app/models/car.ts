@@ -3,7 +3,7 @@ import { Brand } from "./brand";
 export class Car {
     id!: number;
     name!: string;
-    year!: number;
+    modelYear!: number;
     vehicleValue!: number;
     brand!: Brand;
     rentals!: any[];

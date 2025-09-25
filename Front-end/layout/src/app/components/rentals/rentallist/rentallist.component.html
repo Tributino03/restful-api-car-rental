@@ -16,7 +16,6 @@
           <table class="table table-striped table-hover">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Carro</th>
                 <th>Locador</th>
                 <th>Início</th>
@@ -28,7 +27,6 @@
             <tbody>
               @for (rental of rentalList; track rental.id) {
                 <tr>
-                  <td>{{ rental.id }}</td>
                   <td>{{ rental.car.name }}</td>
                   <td>{{ rental.landlord.name }}</td>
                   <td>{{ rental.startDate | date:'dd/MM/yyyy HH:mm' }}</td>

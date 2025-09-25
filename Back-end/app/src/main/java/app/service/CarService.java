@@ -111,6 +111,6 @@ public class CarService {
                 .map(rental -> new RentalDTO(rental.getId(), rental.getStartDate(), rental.getReturnDate(), rental.getStatus()))
                 .collect(Collectors.toList()) : Collections.emptyList();
 
-        return new CarDTO(car.getId(), car.getName(), car.getModelYear(), brandDTO, rentalDTOs);
+        return new CarDTO(car.getId(), car.getName(), car.getModelYear(), car.getVehicleValue(), brandDTO, rentalDTOs);
     }
 }

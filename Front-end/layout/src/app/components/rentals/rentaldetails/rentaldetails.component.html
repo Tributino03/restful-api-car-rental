@@ -9,7 +9,7 @@
           <select class="form-select mb-4" [(ngModel)]="rental.car" [compareWith]="compareById" required>
             <option [ngValue]="undefined" disabled>Selecione um carro...</option>
             @for (car of carList; track car.id) {
-              <option [ngValue]="car">{{ car.name }} (Ano: {{ car.year }})</option>
+              <option [ngValue]="car">{{ car.name }} (Ano: {{ car.modelYear }})</option>
             }
           </select>
 
